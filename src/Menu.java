@@ -79,7 +79,7 @@ public class Menu {
                     addBook();
                     break;
                 case 2:
-                    System.out.println("delete");
+                    deleteBook();
                     break;
                 case 3:
                     getAllBooks();
@@ -101,5 +101,9 @@ public class Menu {
     private static void getAllBooks(){
         List<Book> listOfBooks = bookDAO.getAllBooks();
         listOfBooks.forEach(b -> System.out.println(b));
+    }
+
+    private static void deleteBook(){
+        bookDAO.deleteBook(InputHandler.getPositiveInt("Please enter ID of the book you want to delete: "));
     }
 }
