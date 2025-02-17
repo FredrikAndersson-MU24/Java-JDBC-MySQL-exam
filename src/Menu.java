@@ -47,16 +47,15 @@ public class Menu {
                     lendBook();
                     break;
                 case 2:
-                    System.out.println("return");
+                    returnLoan();
                     break;
                 case 3:
-                    System.out.println("active loans");
+                    getActiveLoans();
                     break;
                 case 4:
-                    System.out.println("list");
+                    getAllBooks();
                     break;
                 case 0:
-                    System.out.println("quit");
                     return;
                 default:
                     System.out.println("error");
@@ -86,7 +85,6 @@ public class Menu {
                     getAllBooks();
                     break;
                 case 0:
-                    System.out.println("quit");
                     return;
                 default:
                     System.out.println("error");
@@ -114,6 +112,22 @@ public class Menu {
                 InputHandler.getPositiveInt("Please enter book ID: "),
                 InputHandler.getPositiveInt("Please enter lend period in days: ")
         );
-
     }
+
+    private static void returnLoan() {
+        loanDAO.returnLoan(
+                InputHandler.getPositiveInt("Please enter book ID to return: ")
+        );
+    }
+
+    private static void getAllLoans(){
+        List<Loan> listOfLoans = loanDAO.getAllLoans();
+        listOfLoans.forEach(l -> System.out.println(l));
+    }
+
+    private static void getActiveLoans(){
+        List<Loan> listOfLoans = loanDAO.getActiveLoans();
+        listOfLoans.forEach(l -> System.out.println(l));
+    }
+
 }

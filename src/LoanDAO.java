@@ -1,8 +1,7 @@
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoanDAO {
     Connection conn = Database.getConnection();
@@ -44,6 +43,85 @@ public class LoanDAO {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public void returnLoan(int bookID) {
+        String setBookAvailableQuery = "UPDATE books SET available = true WHERE id = ?;";
+        String setLoanReturnedQuery = "UPDATE loans SET returned = true WHERE book_id = ?;";
+
+        try {
+            conn.setAutoCommit(false);
+
+            //Set book to available
+            PreparedStatement setBookAvailable = conn.prepareStatement(setBookAvailableQuery);
+            setBookAvailable.setInt(1, bookID);
+            setBookAvailable.executeUpdate();
+            //Set loan as returned
+            PreparedStatement setLoanReturned = conn.prepareStatement(setLoanReturnedQuery);
+            setLoanReturned.setInt(1, bookID);
+            setLoanReturned.executeUpdate();
+
+            conn.commit();
+            System.out.println("Book returned successfully!");
+        } catch (SQLException e) {
+            System.out.println("Failed to execute return");
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public List<Loan> getAllLoans() {
+        String query = "SELECT * FROM loans;";
+        List<Loan> listOfLoans = new ArrayList<>();
+        try {
+            Statement getLoans = conn.createStatement();
+            ResultSet rs = getLoans.executeQuery(query);
+            while (rs.next()) {
+                listOfLoans.add(new Loan(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getInt(3),
+                        rs.getDate(4).toLocalDate(),
+                        rs.getDate(5).toLocalDate(),
+                        rs.getBoolean(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed when trying to get all loans!");
+            e.printStackTrace();
+        }
+        return listOfLoans;
+    }
+
+    public List<Loan> getActiveLoans() {
+        String query = "SELECT * FROM loans WHERE returned = false;";
+        List<Loan> listOfLoans = new ArrayList<>();
+        try {
+            Statement getLoans = conn.createStatement();
+            ResultSet rs = getLoans.executeQuery(query);
+            while (rs.next()) {
+                listOfLoans.add(new Loan(
+                        rs.getInt(1),
+                        rs.getInt(2),
+                        rs.getInt(3),
+                        rs.getDate(4).toLocalDate(),
+                        rs.getDate(5).toLocalDate(),
+                        rs.getBoolean(6)));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed when trying to get active loans!");
+            e.printStackTrace();
+        }
+        return listOfLoans;
     }
 
 }
