@@ -3,6 +3,7 @@ import java.util.List;
 public class Menu {
 
     static BookDAO bookDAO = new BookDAO();
+    static LoanDAO loanDAO = new LoanDAO();
 
 
     public static void mainMenu() {
@@ -43,7 +44,7 @@ public class Menu {
                     """);
             switch (choice) {
                 case 1:
-                    System.out.println("lend");
+                    lendBook();
                     break;
                 case 2:
                     System.out.println("return");
@@ -94,16 +95,24 @@ public class Menu {
         }
     }
 
-    public static void addBook(){
+    public static void addBook() {
         bookDAO.addBook(InputHandler.getString("Title"), InputHandler.getPositiveInt("Author ID"));
     }
 
-    private static void getAllBooks(){
+    private static void getAllBooks() {
         List<Book> listOfBooks = bookDAO.getAllBooks();
         listOfBooks.forEach(b -> System.out.println(b));
     }
 
-    private static void deleteBook(){
+    private static void deleteBook() {
         bookDAO.deleteBook(InputHandler.getPositiveInt("Please enter ID of the book you want to delete: "));
+    }
+
+    private static void lendBook() {
+        loanDAO.addLoan(
+                InputHandler.getPositiveInt("Please enter user ID: "),
+                InputHandler.getPositiveInt("Please enter book ID: "),
+                InputHandler.getPositiveInt("Please enter lend period in days: ")
+        );
     }
 }
