@@ -114,5 +114,6 @@ public class Menu {
                 InputHandler.getPositiveInt("Please enter book ID: "),
                 InputHandler.getPositiveInt("Please enter lend period in days: ")
         );
+
     }
 }
