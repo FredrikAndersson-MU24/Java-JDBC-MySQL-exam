@@ -7,4 +7,5 @@ public class Loan {
     int bookId;
     LocalDate loanDate;
     LocalDate returnDate;
+    boolean returned;
 }
