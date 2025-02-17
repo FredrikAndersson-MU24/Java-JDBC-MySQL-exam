@@ -122,11 +122,21 @@ public class Menu {
                 System.out.println("Sorry, this book is not available right now.");
             }
         }
-
     }
 
     private static void returnLoan() {
-        loanDAO.returnLoan(InputHandler.getPositiveInt("Please enter book ID to return: "));
+        Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
+        if (book != null && !book.isAvailable()) {
+            loanDAO.returnLoan(book.getId());
+        } else {
+            if (book == null) {
+                System.out.println("Unknown book ID!");
+                return;
+            }
+            if (book.isAvailable()) {
+                System.out.println("Sorry, the specified book is not on loan. Please check book ID!");
+            }
+        }
     }
 
     private static void getAllLoans() {
