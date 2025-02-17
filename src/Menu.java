@@ -4,6 +4,7 @@ public class Menu {
 
     static BookDAO bookDAO = new BookDAO();
     static LoanDAO loanDAO = new LoanDAO();
+    static AuthorDAO authorDAO = new AuthorDAO();
 
 
     public static void mainMenu() {
@@ -14,6 +15,7 @@ public class Menu {
                     
                     1. User
                     2. Admin
+                    0. Quit
                     """);
             switch (choice) {
                 case 1:
@@ -72,6 +74,8 @@ public class Menu {
                     1. Add a book
                     2. Delete a book
                     3. List all books
+                    4. Add author
+                    5. List all authors
                     0. Go back
                     """);
             switch (choice) {
@@ -83,6 +87,12 @@ public class Menu {
                     break;
                 case 3:
                     getAllBooks();
+                    break;
+                case 4:
+                    addAuthor();
+                    break;
+                case 5:
+                    getAuthors();
                     break;
                 case 0:
                     return;
@@ -145,6 +155,14 @@ public class Menu {
 
     private static void getActiveLoans() {
         loanDAO.getActiveLoans().forEach(l -> System.out.println(l));
+    }
+
+    private static void addAuthor(){
+        authorDAO.addAuthor(InputHandler.getString("Please enter the name of the author: "));
+    }
+
+    private static void getAuthors(){
+        authorDAO.getAuthors().forEach(a -> System.out.println(a));
     }
 
 }

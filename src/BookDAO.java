@@ -7,7 +7,7 @@ public class BookDAO {
 
 
     public void addBook(String title, int authorId) {
-        String query = "INSERT INTO books (title, author, available) VALUES (?, ?, ?);";
+        String query = "INSERT INTO books (title, author_id, available) VALUES (?, ?, ?);";
         boolean available = true;
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
