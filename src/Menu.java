@@ -74,7 +74,7 @@ public class Menu {
                     """);
             switch (choice) {
                 case 1:
-                    System.out.println("add");
+                    addBook();
                     break;
                 case 2:
                     System.out.println("delete");
@@ -92,9 +92,7 @@ public class Menu {
         }
     }
 
-    public void addBook(){
+    public static void addBook(){
         bookDAO.addBook(InputHandler.getString("Title"), InputHandler.getPositiveInt("Author ID"));
-
-
     }
 }
