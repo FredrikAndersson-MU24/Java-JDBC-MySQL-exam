@@ -107,27 +107,34 @@ public class Menu {
     }
 
     private static void lendBook() {
-        loanDAO.addLoan(
-                InputHandler.getPositiveInt("Please enter user ID: "),
-                InputHandler.getPositiveInt("Please enter book ID: "),
-                InputHandler.getPositiveInt("Please enter lend period in days: ")
-        );
+        Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
+        if (book != null && book.isAvailable()) {
+            loanDAO.addLoan(
+                    InputHandler.getPositiveInt("Please enter user ID: "),
+                    book.getId(),
+                    InputHandler.getPositiveInt("Please enter lend period in days: "));
+        } else {
+            if (book == null) {
+                System.out.println("Unknown book ID!");
+                return;
+            }
+            if (!book.isAvailable()) {
+                System.out.println("Sorry, this book is not available right now.");
+            }
+        }
+
     }
 
     private static void returnLoan() {
-        loanDAO.returnLoan(
-                InputHandler.getPositiveInt("Please enter book ID to return: ")
-        );
+        loanDAO.returnLoan(InputHandler.getPositiveInt("Please enter book ID to return: "));
     }
 
-    private static void getAllLoans(){
-        List<Loan> listOfLoans = loanDAO.getAllLoans();
-        listOfLoans.forEach(l -> System.out.println(l));
+    private static void getAllLoans() {
+        loanDAO.getAllLoans().forEach(l -> System.out.println(l));
     }
 
-    private static void getActiveLoans(){
-        List<Loan> listOfLoans = loanDAO.getActiveLoans();
-        listOfLoans.forEach(l -> System.out.println(l));
+    private static void getActiveLoans() {
+        loanDAO.getActiveLoans().forEach(l -> System.out.println(l));
     }
 
 }

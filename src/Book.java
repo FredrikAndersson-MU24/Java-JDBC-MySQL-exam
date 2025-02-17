@@ -19,4 +19,12 @@ public class Book {
                 "\nAuthor ID: " + authorId +
                 "\nAvailable:" + available;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
 }
