@@ -82,7 +82,7 @@ public class Menu {
                     System.out.println("delete");
                     break;
                 case 3:
-                    System.out.println("list");
+                    getAllBooks();
                     break;
                 case 0:
                     System.out.println("quit");
