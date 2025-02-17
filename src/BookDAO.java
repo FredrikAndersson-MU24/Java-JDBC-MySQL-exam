@@ -20,5 +20,25 @@ public class BookDAO {
         }
     }
 
+    public List<Book> getAllBooks(){
+        String query = "SELECT * FROM books;";
+        List<Book> listOfBooks = new ArrayList<>();
+
+        try {
+            Connection conn = Database.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while(rs.next()){
+                listOfBooks.add(new Book(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getBoolean(4)));
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Failed to get all books!");
+            e.printStackTrace();
+        }
+
+        return listOfBooks;
+    }
+
 
 }

@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Menu {
 
     static BookDAO bookDAO = new BookDAO();
@@ -94,5 +96,10 @@ public class Menu {
 
     public static void addBook(){
         bookDAO.addBook(InputHandler.getString("Title"), InputHandler.getPositiveInt("Author ID"));
+    }
+
+    private static void getAllBooks(){
+        List<Book> listOfBooks = bookDAO.getAllBooks();
+        listOfBooks.forEach(b -> System.out.println(b));
     }
 }
