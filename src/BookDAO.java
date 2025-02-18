@@ -39,13 +39,14 @@ public class BookDAO {
     }
 
     public List<Book> getAllBooks() {
-        String query = "SELECT * FROM books;";
+        String query = "SELECT books.id AS 'Book ID', books.title AS Title, authors.id AS 'Author ID', authors.name AS 'Author', books.available AS Available FROM books\n" +
+                "\tJOIN authors ON authors.id = books.author_id;";
         List<Book> listOfBooks = new ArrayList<>();
         try {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                listOfBooks.add(new Book(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getBoolean(4)));
+                listOfBooks.add(new Book(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getBoolean(5)));
             }
         } catch (SQLException e) {
             System.out.println("Failed to get all books!");
