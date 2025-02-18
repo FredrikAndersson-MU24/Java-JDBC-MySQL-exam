@@ -5,6 +5,7 @@ public class Loan {
     int id;
     int userId;
     int bookId;
+    String title;
     LocalDate loanDate;
     LocalDate returnDate;
     boolean returned;
@@ -18,13 +19,24 @@ public class Loan {
         this.returned = returned;
     }
 
+    public Loan(int id, int userId, int bookId, String title, LocalDate loanDate, LocalDate returnDate, boolean returned) {
+        this.id = id;
+        this.userId = userId;
+        this.bookId = bookId;
+        this.title = title;
+        this.loanDate = loanDate;
+        this.returnDate = returnDate;
+        this.returned = returned;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id +
                 "\tUser Id: " + userId +
                 "\tBook ID:" + bookId +
+                "\tTitle: " + title +
                 "\tLoan date: " + loanDate +
                 "\tReturn date: " + returnDate +
-                "\tReturned: " + returned;
+                "\tReturned: " + (returned ? "Yes": "No");
     }
 }
