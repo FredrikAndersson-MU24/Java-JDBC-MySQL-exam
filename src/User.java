@@ -3,13 +3,17 @@ public abstract class User {
     String name;
     String username;
     String password;
-    boolean adminRights;
+    boolean admin;
 
-    public User(int id, String name, String username, String password, boolean adminRights) {
+    public User(int id, String name, String username, String password, boolean admin) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.password = password;
-        this.adminRights = adminRights;
+        this.admin = admin;
+    }
+
+    public boolean isAdmin() {
+        return admin;
     }
 }
