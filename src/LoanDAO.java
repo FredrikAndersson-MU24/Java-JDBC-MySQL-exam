@@ -103,7 +103,9 @@ public class LoanDAO {
     }
 
     public List<Loan> getActiveLoans() {
-        String query = "SELECT * FROM loans WHERE returned = false;";
+        String query =  "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
+                        "JOIN books ON loans.book_id = books.id " +
+                        "WHERE returned = false;";
         List<Loan> listOfLoans = new ArrayList<>();
         try {
             Statement getLoans = conn.createStatement();
@@ -113,9 +115,10 @@ public class LoanDAO {
                         rs.getInt(1),
                         rs.getInt(2),
                         rs.getInt(3),
-                        rs.getDate(4).toLocalDate(),
+                        rs.getString(4),
                         rs.getDate(5).toLocalDate(),
-                        rs.getBoolean(6)));
+                        rs.getDate(6).toLocalDate(),
+                        rs.getBoolean(7)));
             }
         } catch (SQLException e) {
             System.out.println("Failed when trying to get active loans!");
