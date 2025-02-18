@@ -10,4 +10,16 @@ public class RegisteredUser extends User{
     public int getLoanPeriod() {
         return loanPeriod;
     }
+
+    @Override
+    public String toString() {
+        return "RegisteredUser{" +
+                "loanPeriod=" + loanPeriod +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", admin=" + admin +
+                '}';
+    }
 }
