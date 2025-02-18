@@ -1,10 +1,14 @@
 import java.util.List;
+import java.util.Locale;
 
 public class Menu {
 
     static BookDAO bookDAO = new BookDAO();
     static LoanDAO loanDAO = new LoanDAO();
     static AuthorDAO authorDAO = new AuthorDAO();
+    static UserDAO userDAO = new UserDAO();
+
+    static User currentUser;
 
 
     public static void mainMenu() {
@@ -19,7 +23,7 @@ public class Menu {
                     """);
             switch (choice) {
                 case 1:
-                    userMenu();
+                    userLoginMenu();
                     break;
                 case 2:
                     adminMenu();
@@ -33,6 +37,31 @@ public class Menu {
             }
         }
     }
+
+    public static void userLoginMenu(){
+        while(true){
+            int choice = InputHandler.getPositiveInt("""
+                    --- User Login ---
+                    1. Login as registered user
+                    2. Register as user
+                    0. Go back
+                    """);
+            switch ( choice) {
+                case 1:
+                    System.out.println("login");
+                    break;
+                case 2:
+                    addUser();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Please enter valid menu option.");
+                    break;
+            }
+        }
+    }
+
 
     public static void userMenu() {
         while (true) {
@@ -93,6 +122,9 @@ public class Menu {
                     break;
                 case 5:
                     getAuthors();
+                    break;
+                case 6:
+                    addUserAsAdmin();
                     break;
                 case 0:
                     return;
@@ -163,6 +195,42 @@ public class Menu {
 
     private static void getAuthors(){
         authorDAO.getAuthors().forEach(a -> System.out.println(a));
+    }
+
+    private static void addUser(){
+        String name = InputHandler.getString("Please enter your name: ");
+        String username;
+        while(true){
+            username = InputHandler.getString("Please enter your username: ");
+            if (!usernameExists(username.toLowerCase())){
+                break;
+            }
+            System.out.println("Username already exists!");
+        }
+        String password = InputHandler.getString("Please enter your password: ");
+        int loanPeriod = 28;
+        boolean admin = false;
+        userDAO.addUser(name, username, password, loanPeriod, admin);
+    }
+
+    private static void addUserAsAdmin(){
+        String name = InputHandler.getString("Please enter name: ");
+        String username;
+        while(true){
+            username = InputHandler.getString("Please enter username: ");
+            if (!usernameExists(username.toLowerCase())){
+                break;
+            }
+            System.out.println("Username already exists!");
+        }
+        String password = InputHandler.getString("Please enter password: ");
+        int loanPeriod = InputHandler.getPositiveInt("Please enter loan period (default 28):");
+        boolean admin = InputHandler.getBoolean("Should this be an admin user? Y/N: ");
+        userDAO.addUser(name, username, password, loanPeriod, admin);
+    }
+
+    private static boolean usernameExists(String newUsername){
+        return userDAO.getUsernames().contains(newUsername);
     }
 
 }
