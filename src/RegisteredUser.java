@@ -7,4 +7,7 @@ public class RegisteredUser extends User{
         this.loanPeriod = loanPeriod;
     }
 
+    public int getLoanPeriod() {
+        return loanPeriod;
+    }
 }
