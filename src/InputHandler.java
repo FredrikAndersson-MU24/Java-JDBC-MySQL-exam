@@ -29,4 +29,17 @@ public class InputHandler {
         }
     }
 
+    public static boolean getBoolean(String text){
+        while(true){
+            System.out.println(text);
+            String strInput = scanner.nextLine();
+            if(strInput.toLowerCase().startsWith("y")){
+                return true;
+            }
+            if(strInput.toLowerCase().startsWith("n")){
+                return false;
+            }
+            System.out.println("Please enter a valid choice. Y/N ");
+        }
+    }
 }
