@@ -29,10 +29,9 @@ public class Menu {
                     adminMenu();
                     break;
                 case 0:
-                    System.out.println("quit");
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
@@ -48,7 +47,7 @@ public class Menu {
                     """);
             switch ( choice) {
                 case 1:
-                    System.out.println("login");
+                    authenticateLogin();
                     break;
                 case 2:
                     addUser();
@@ -89,7 +88,7 @@ public class Menu {
                 case 0:
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
@@ -105,6 +104,7 @@ public class Menu {
                     3. List all books
                     4. Add author
                     5. List all authors
+                    6. Add user
                     0. Go back
                     """);
             switch (choice) {
@@ -129,7 +129,7 @@ public class Menu {
                 case 0:
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
@@ -233,4 +233,26 @@ public class Menu {
         return userDAO.getUsernames().contains(newUsername);
     }
 
+    private static void authenticateLogin(){
+        String username;
+        String password;
+        while(true){
+            username = InputHandler.getString("Please enter your username: ");
+            if (usernameExists(username.toLowerCase())){
+                break;
+            }
+            System.out.println("User not found!");
+        }
+        while(true) {
+            password = InputHandler.getString("Please enter your password (case sensitive): ");
+            if (userDAO.getPassword(username).equals(password)){
+                break;
+            }
+            System.out.println("Wrong password! ");
+        }
+        currentUser = userDAO.getUser(username);
+        System.out.println(currentUser);
+    }
 }
+
+ // TODO Send user to menu after authentication
