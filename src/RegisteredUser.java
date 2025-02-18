@@ -1,0 +1,10 @@
+public class RegisteredUser extends User{
+
+    private int loanPeriod = 28; // loan period in days
+
+    public RegisteredUser(int id, String name, String username, String password, int loanPeriod) {
+        super(id, name, username, password, false);
+        this.loanPeriod = loanPeriod;
+    }
+
+}
