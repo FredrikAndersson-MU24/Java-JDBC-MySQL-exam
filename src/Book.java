@@ -2,6 +2,7 @@ public class Book {
     int id;
     String title;
     int authorId;
+    String author;
     boolean available;
 
 
@@ -12,12 +13,21 @@ public class Book {
         this.available = available;
     }
 
+    public Book(int id, String title, int authorId, String author, boolean available) {
+        this.id = id;
+        this.title = title;
+        this.authorId = authorId;
+        this.author = author;
+        this.available = available;
+    }
+
     @Override
     public String toString() {
-        return "ID: " + id +
-                "\nTitle: " + title +
-                "\nAuthor ID: " + authorId +
-                "\nAvailable:" + available;
+        return "Title: " + title +
+                "\nAuthor : " + author +
+                "\nAvailable: " + (available ? "Yes" : "No") +
+                "\nBook ID: " + id +
+                "\nAuthor ID: " + authorId;
     }
 
     public int getId() {
