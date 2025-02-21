@@ -182,7 +182,12 @@ public class Menu {
     }
 
     private static void returnLoan() {
-        Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
+        getUsersActiveLoans();
+        int id = InputHandler.getPositiveInt("Please enter book ID (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        Book book = bookDAO.getBookById(id);
         if (book != null && !book.isAvailable()) {
             loanDAO.returnLoan(book.getId());
         } else {
