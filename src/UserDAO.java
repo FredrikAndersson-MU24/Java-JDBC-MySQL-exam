@@ -57,6 +57,11 @@ public class UserDAO {
         return password;
     }
 
+    /**
+     * Use to get a user object from the database. Intended use case is setting the current user when logging in.
+     * @param username
+     * @return AdminUser or RegisteredUser object
+     */
     public User getUser(String username){
         String query = "SELECT * FROM users WHERE username = ?";
         User user = null;
