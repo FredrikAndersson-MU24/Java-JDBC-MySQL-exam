@@ -6,12 +6,6 @@ public class AdminUser extends User{
 
     @Override
     public String toString() {
-        return "AdminUser{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", admin=" + admin +
-                '}';
+        return "AdminUser{}";
     }
 }
