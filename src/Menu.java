@@ -9,33 +9,6 @@ public class Menu {
 
     static User currentUser;
 
-
-    public static void mainMenu() {
-        while (true) {
-            int choice = InputHandler.getPositiveInt("""
-                     --- Welcome to the library ---
-                     Please choose login method
-                    
-                    1. User
-                    2. Admin
-                    0. Quit
-                    """);
-            switch (choice) {
-                case 1:
-                    userLoginMenu();
-                    break;
-                case 2:
-                    adminMenu();
-                    break;
-                case 0:
-                    return;
-                default:
-                    System.out.println("Please enter valid menu option.");
-                    break;
-            }
-        }
-    }
-
     public static void userLoginMenu(){
         while(true){
             int choice = InputHandler.getPositiveInt("""
