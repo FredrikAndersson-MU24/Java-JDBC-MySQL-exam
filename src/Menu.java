@@ -136,7 +136,16 @@ public class Menu {
     }
 
     public static void addBook() {
-        bookDAO.addBook(InputHandler.getString("Title"), InputHandler.getPositiveInt("Author ID"));
+        String title = InputHandler.getString("Please enter book title (or 0(zero) to abort):");
+        if (title.equals("0")){
+            return;
+        }
+        getAuthors();
+        int authorId = InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
+        if (authorId == 0){
+            return;
+        }
+        bookDAO.addBook(title, authorId);
     }
 
     private static void getAllBooks() {
