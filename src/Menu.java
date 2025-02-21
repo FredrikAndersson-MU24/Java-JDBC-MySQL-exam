@@ -323,8 +323,9 @@ public class Menu {
     }
 
     /**
-     * @param username
-     * @return
+     * Use to validate users password at login. Queries the database with the username and checks if the password matches.
+     * @param username Provide username to check password for.
+     * @return True if password is correct. Else false.
      */
     private static boolean authenticatePassword(String username) {
         boolean result;
