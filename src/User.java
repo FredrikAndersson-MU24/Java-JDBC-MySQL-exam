@@ -1,9 +1,9 @@
 public abstract class User {
-    private int id;
-    private String name;
-    private String username;
+    private final int id;
+    private final String name;
+    private final String username;
     private String password;
-    private boolean admin;
+    private final boolean admin;
     private int loanPeriod; // loan period in days
 
     public User(int id, String name, String username, boolean admin) {
@@ -36,14 +36,6 @@ public abstract class User {
 
     public String getName() {
         return name;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public boolean isAdmin() {
