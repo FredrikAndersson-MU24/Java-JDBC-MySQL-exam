@@ -13,9 +13,9 @@ public class Menu {
         while(true){
             int choice = InputHandler.getPositiveInt("""
                     --- User Login ---
-                    1. Login as registered user
+                    1. Login as registered user or admin
                     2. Register as user
-                    0. Go back
+                    0. Quit
                     """);
             switch ( choice) {
                 case 1:
@@ -41,13 +41,14 @@ public class Menu {
     public static void userMenu() {
         while (true) {
             int choice = InputHandler.getPositiveInt("""
-                     --- User menu ---
+                     --- Welcome back %s! ---
+                     --- What would you like to do today? ---
                     1. Lend a book
                     2. Return a book
                     3. Check for active loans
                     4. List all available books
                     0. Go back
-                    """);
+                    """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
                     lendBook();
@@ -74,7 +75,7 @@ public class Menu {
         while (true) {
             int choice = InputHandler.getPositiveInt("""
                      --- Administration ---
-                    
+                    --- Hi, %s! ---
                     1. Add a book
                     2. Delete a book
                     3. List all books
@@ -82,7 +83,7 @@ public class Menu {
                     5. List all authors
                     6. Add user
                     0. Go back
-                    """);
+                    """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
                     addBook();
