@@ -5,45 +5,50 @@ public class Menu {
     static BookDAO bookDAO = new BookDAO();
     static LoanDAO loanDAO = new LoanDAO();
     static AuthorDAO authorDAO = new AuthorDAO();
+    static UserDAO userDAO = new UserDAO();
 
+    static User currentUser;
 
-    public static void mainMenu() {
+    public static void userLoginMenu() {
         while (true) {
             int choice = InputHandler.getPositiveInt("""
-                     --- Welcome to the library ---
-                     Please choose login method
-                    
-                    1. User
-                    2. Admin
+                    --- User Login ---
+                    1. Login as registered user or admin
+                    2. Register as user
                     0. Quit
                     """);
             switch (choice) {
                 case 1:
-                    userMenu();
+                    switch (authenticateLogin()) {
+                        case 1 -> userMenu();
+                        case 2 -> adminMenu();
+                        case 0 -> {}
+                    }
                     break;
                 case 2:
-                    adminMenu();
+                    addUser();
                     break;
                 case 0:
-                    System.out.println("quit");
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
     }
 
+
     public static void userMenu() {
         while (true) {
             int choice = InputHandler.getPositiveInt("""
-                     --- User menu ---
+                     --- Welcome back %s! ---
+                     --- What would you like to do today? ---
                     1. Lend a book
                     2. Return a book
                     3. Check for active loans
                     4. List all available books
                     0. Go back
-                    """);
+                    """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
                     lendBook();
@@ -58,9 +63,10 @@ public class Menu {
                     getAllBooks();
                     break;
                 case 0:
+                    currentUser = null;
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
@@ -70,14 +76,15 @@ public class Menu {
         while (true) {
             int choice = InputHandler.getPositiveInt("""
                      --- Administration ---
-                    
+                    --- Hi, %s! ---
                     1. Add a book
                     2. Delete a book
                     3. List all books
                     4. Add author
                     5. List all authors
+                    6. Add user
                     0. Go back
-                    """);
+                    """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
                     addBook();
@@ -94,10 +101,14 @@ public class Menu {
                 case 5:
                     getAuthors();
                     break;
+                case 6:
+                    addUserAsAdmin();
+                    break;
                 case 0:
+                    currentUser = null;
                     return;
                 default:
-                    System.out.println("error");
+                    System.out.println("Please enter valid menu option.");
                     break;
             }
         }
@@ -120,9 +131,10 @@ public class Menu {
         Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
         if (book != null && book.isAvailable()) {
             loanDAO.addLoan(
-                    InputHandler.getPositiveInt("Please enter user ID: "),
+                    currentUser.getId(),
                     book.getId(),
-                    InputHandler.getPositiveInt("Please enter lend period in days: "));
+                    currentUser.getLoanPeriod());
+            System.out.println("Book added to your list of loans");
         } else {
             if (book == null) {
                 System.out.println("Unknown book ID!");
@@ -157,12 +169,104 @@ public class Menu {
         loanDAO.getActiveLoans().forEach(l -> System.out.println(l));
     }
 
-    private static void addAuthor(){
+    private static void addAuthor() {
         authorDAO.addAuthor(InputHandler.getString("Please enter the name of the author: "));
     }
 
-    private static void getAuthors(){
+    private static void getAuthors() {
         authorDAO.getAuthors().forEach(a -> System.out.println(a));
     }
 
+    private static void addUser() {
+        String name = InputHandler.getString("Please enter your name: ");
+        String username;
+        while (true) {
+            username = InputHandler.getString("Please enter your username: ");
+            if (!usernameExists(username.toLowerCase())) {
+                break;
+            }
+            System.out.println("Username already exists!");
+        }
+        String password = InputHandler.getString("Please enter your password: ");
+        int loanPeriod = 28;
+        boolean admin = false;
+        userDAO.addUser(name, username, password, loanPeriod, admin);
+    }
+
+    private static void addUserAsAdmin() {
+        String name = InputHandler.getString("Please enter name: ");
+        String username;
+        while (true) {
+            username = InputHandler.getString("Please enter username: ");
+            if (!usernameExists(username.toLowerCase())) {
+                break;
+            }
+            System.out.println("Username already exists!");
+        }
+        String password = InputHandler.getString("Please enter password: ");
+        int loanPeriod = InputHandler.getPositiveInt("Please enter loan period (default 28):");
+        boolean admin = InputHandler.getBoolean("Should this be an admin user? Y/N: ");
+        userDAO.addUser(name, username, password, loanPeriod, admin);
+    }
+
+    private static boolean usernameExists(String newUsername) {
+        return userDAO.getUsernames().contains(newUsername);
+    }
+
+
+    /**
+     * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
+     * If the user inputs the number zero in either prompts the login attempt is aborted.
+     *
+     * @return An integer to use in a switch statement.
+     * 0 if login is aborted.
+     * 1 if RegisteredUser.
+     * 2 if AdminUser.
+     */
+    private static int authenticateLogin() {
+        int choice = 0; // Value to return if login is aborted at any point
+        String username = authenticateUsername();
+        if (!username.equals("0")) {
+            if (authenticatePassword(username)) {
+                currentUser = userDAO.getUser(username);
+                choice = (currentUser instanceof AdminUser ? 2 : 1);//instanceof just to practice using it. Could also have used .isAdmin()
+            }
+        }
+        return choice;
+    }
+
+    private static String authenticateUsername() {
+        String username;
+        while (true) {
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ");
+            if (username.equals("0")) {
+                break;
+            } else if (userDAO.getUsernames().contains(username.toLowerCase())) {
+                break;
+            }
+            System.out.println("User not found!");
+        }
+        return username;
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    private static boolean authenticatePassword(String username) {
+        boolean result;
+        while (true) {
+            String password = InputHandler.getString("Please enter your password  (or 0(zero) to abort login attempt): ");
+            if (password.equals("0")) {
+                result = false;
+                break;
+            } else if (userDAO.getPassword(username).equals(password)) {
+                result = true;
+                break;
+            }
+            System.out.println("Wrong password! Note that the password is case sensitive.");
+        }
+        return result;
+    }
 }
