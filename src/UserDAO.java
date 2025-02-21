@@ -4,7 +4,7 @@ import java.util.List;
 
 public class UserDAO {
 
-    private Connection conn = Database.getConnection();
+    private final Connection conn = Database.getConnection();
 
     public void addUser(String name, String username, String password, int loanPeriod, boolean admin){
         String query = "INSERT INTO users (name, username, password, loan_period, admin_rights) VALUES (?, ?, ?, ?, ?);";
