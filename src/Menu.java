@@ -63,6 +63,7 @@ public class Menu {
                     getAllBooks();
                     break;
                 case 0:
+                    currentUser = null;
                     return;
                 default:
                     System.out.println("Please enter valid menu option.");
@@ -104,6 +105,7 @@ public class Menu {
                     addUserAsAdmin();
                     break;
                 case 0:
+                    currentUser = null;
                     return;
                 default:
                     System.out.println("Please enter valid menu option.");
