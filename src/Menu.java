@@ -50,7 +50,7 @@ public class Menu {
                     4. List all available books
                     5. Search books by title
                     6. Search authors
-                    0. Go back
+                    0. Log out
                     """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
@@ -94,7 +94,7 @@ public class Menu {
                     6. Add user
                     7. View all active loans
                     8. View all loans
-                    0. Go back
+                    0. Log out
                     """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
