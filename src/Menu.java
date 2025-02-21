@@ -48,6 +48,8 @@ public class Menu {
                     2. Return a book
                     3. Check for active loans
                     4. List all available books
+                    5. Search books by title
+                    6. Search authors
                     0. Go back
                     """.formatted(currentUser.getName()));
             switch (choice) {
@@ -62,6 +64,12 @@ public class Menu {
                     break;
                 case 4:
                     getAllBooks();
+                    break;
+                case 5:
+                    getBooksByFreeTextSearch();
+                    break;
+                case 6:
+                    getAuthorsByFreeTextSearch();
                     break;
                 case 0:
                     currentUser = null;
@@ -132,6 +140,15 @@ public class Menu {
         listOfBooks.forEach(b -> System.out.println(b));
     }
 
+    private static void getBooksByFreeTextSearch() {
+        List<Book> listOfBooks = bookDAO.getBooksByFreeTextSearch(InputHandler.getString("Please enter search term: "));
+        if (listOfBooks.isEmpty()){
+            System.out.println("No match for search term.");
+        } else {
+            listOfBooks.forEach(b -> System.out.println(b));
+        }
+    }
+
     private static void deleteBook() {
         bookDAO.deleteBook(InputHandler.getPositiveInt("Please enter ID of the book you want to delete: "));
     }
@@ -198,6 +215,15 @@ public class Menu {
 
     private static void getAuthors() {
         authorDAO.getAuthors().forEach(a -> System.out.println(a));
+    }
+
+    private static void getAuthorsByFreeTextSearch() {
+        List<Author> listOfAuthors = authorDAO.getAuthorsByFreeTextSearch(InputHandler.getString("Please enter search term: "));
+        if (listOfAuthors.isEmpty()){
+            System.out.println("No match.");
+        } else {
+            listOfAuthors.forEach(a -> System.out.println(a));
+        }
     }
 
     private static void addUser() {
