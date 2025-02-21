@@ -9,15 +9,15 @@ public class Menu {
 
     static User currentUser;
 
-    public static void userLoginMenu(){
-        while(true){
+    public static void userLoginMenu() {
+        while (true) {
             int choice = InputHandler.getPositiveInt("""
                     --- User Login ---
                     1. Login as registered user or admin
                     2. Register as user
                     0. Quit
                     """);
-            switch ( choice) {
+            switch (choice) {
                 case 1:
                     switch (authenticateLogin()) {
                         case 1 -> userMenu();
@@ -169,20 +169,20 @@ public class Menu {
         loanDAO.getActiveLoans().forEach(l -> System.out.println(l));
     }
 
-    private static void addAuthor(){
+    private static void addAuthor() {
         authorDAO.addAuthor(InputHandler.getString("Please enter the name of the author: "));
     }
 
-    private static void getAuthors(){
+    private static void getAuthors() {
         authorDAO.getAuthors().forEach(a -> System.out.println(a));
     }
 
-    private static void addUser(){
+    private static void addUser() {
         String name = InputHandler.getString("Please enter your name: ");
         String username;
-        while(true){
+        while (true) {
             username = InputHandler.getString("Please enter your username: ");
-            if (!usernameExists(username.toLowerCase())){
+            if (!usernameExists(username.toLowerCase())) {
                 break;
             }
             System.out.println("Username already exists!");
@@ -193,12 +193,12 @@ public class Menu {
         userDAO.addUser(name, username, password, loanPeriod, admin);
     }
 
-    private static void addUserAsAdmin(){
+    private static void addUserAsAdmin() {
         String name = InputHandler.getString("Please enter name: ");
         String username;
-        while(true){
+        while (true) {
             username = InputHandler.getString("Please enter username: ");
-            if (!usernameExists(username.toLowerCase())){
+            if (!usernameExists(username.toLowerCase())) {
                 break;
             }
             System.out.println("Username already exists!");
@@ -209,7 +209,7 @@ public class Menu {
         userDAO.addUser(name, username, password, loanPeriod, admin);
     }
 
-    private static boolean usernameExists(String newUsername){
+    private static boolean usernameExists(String newUsername) {
         return userDAO.getUsernames().contains(newUsername);
     }
 
