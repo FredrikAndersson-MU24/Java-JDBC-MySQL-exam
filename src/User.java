@@ -6,6 +6,12 @@ public abstract class User {
     private boolean admin;
     private int loanPeriod; // loan period in days
 
+    public User(int id, String name, String username, boolean admin) {
+        this.id = id;
+        this.name = name;
+        this.username = username;
+        this.admin = admin;
+    }
 
     public User(int id, String name, String username, String password, boolean admin) {
         this.id = id;
@@ -14,6 +20,7 @@ public abstract class User {
         this.password = password;
         this.admin = admin;
     }
+
     public User(int id, String name, String username, String password, boolean admin, int loanPeriod) {
         this.id = id;
         this.name = name;
