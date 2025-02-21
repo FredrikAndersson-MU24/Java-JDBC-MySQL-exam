@@ -102,29 +102,68 @@ public class LoanDAO {
         return listOfLoans;
     }
 
-    public List<Loan> getActiveLoans() {
-        String query =  "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
-                        "JOIN books ON loans.book_id = books.id " +
-                        "WHERE returned = false;";
+    /**
+     * Returns the users active loans from the database.
+     * @param user
+     * @return A list of the users active loans.
+     */
+    public List<Loan> getUsersActiveLoans(User user) {
+        String query = "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
+                "JOIN books ON loans.book_id = books.id " +
+                "WHERE user_id = ? AND returned = false;";
         List<Loan> listOfLoans = new ArrayList<>();
         try {
-            Statement getLoans = conn.createStatement();
-            ResultSet rs = getLoans.executeQuery(query);
+            PreparedStatement getLoans = conn.prepareStatement(query);
+            getLoans.setInt(1, user.getId());
+            ResultSet rs = getLoans.executeQuery();
             while (rs.next()) {
-                listOfLoans.add(new Loan(
-                        rs.getInt(1),
-                        rs.getInt(2),
-                        rs.getInt(3),
-                        rs.getString(4),
-                        rs.getDate(5).toLocalDate(),
-                        rs.getDate(6).toLocalDate(),
-                        rs.getBoolean(7)));
+                listOfLoans.add(createLoanFromResultSet(rs));
             }
         } catch (SQLException e) {
             System.out.println("Failed when trying to get active loans!");
             e.printStackTrace();
         }
         return listOfLoans;
+    }
+
+
+    /**
+     *  Get all active loans from the database
+     * @return A list of all loans with status returned = false
+     */
+    public List<Loan> getAllActiveLoans() {
+        String query = "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
+                "JOIN books ON loans.book_id = books.id " +
+                "WHERE returned = false;";
+        List<Loan> listOfLoans = new ArrayList<>();
+        try {
+            Statement getLoans = conn.createStatement();
+            ResultSet rs = getLoans.executeQuery(query);
+            while (rs.next()) {
+                listOfLoans.add(createLoanFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed when trying to get active loans!");
+            e.printStackTrace();
+        }
+        return listOfLoans;
+    }
+
+    /**
+     *
+     * @param rs
+     * @return A Loan with seven arguments
+     * @throws SQLException
+     */
+    private static Loan createLoanFromResultSet(ResultSet rs) throws SQLException {
+        return new Loan(
+                rs.getInt(1),
+                rs.getInt(2),
+                rs.getInt(3),
+                rs.getString(4),
+                rs.getDate(5).toLocalDate(),
+                rs.getDate(6).toLocalDate(),
+                rs.getBoolean(7));
     }
 
 }

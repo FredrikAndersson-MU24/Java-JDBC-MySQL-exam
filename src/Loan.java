@@ -39,4 +39,13 @@ public class Loan {
                 "\tReturn date: " + returnDate +
                 "\tReturned: " + (returned ? "Yes": "No");
     }
+
+    public String toStringAsUser() {
+        return "Loan ID: " + id +
+                "\tBook ID:" + bookId +
+                "\tTitle: " + title +
+                "\tLoan date: " + loanDate +
+                "\tReturn date: " + returnDate +
+                "\tLate: " + (returnDate.isBefore(LocalDate.now()) ? "Yes" : "No");
+    }
 }
