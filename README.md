@@ -5,6 +5,10 @@
 ### Creating the MySQL database
 Before running the application, the MySQL database needs to be created. Use the script from MySQL.txt. This will preload 
 the database with some books, authors, users and loans.
+Environmental variables: 
+* MYSQL_URL
+* MYSQL_USERNAME
+* MYSQL_PASSWORD
 
 ### Running the Java application
 To use the application the user needs to be registered. If they are registered they can choose to log in, 
