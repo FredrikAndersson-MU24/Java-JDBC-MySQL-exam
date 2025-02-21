@@ -131,9 +131,10 @@ public class Menu {
         Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
         if (book != null && book.isAvailable()) {
             loanDAO.addLoan(
-                    InputHandler.getPositiveInt("Please enter user ID: "),
+                    currentUser.getId(),
                     book.getId(),
-                    InputHandler.getPositiveInt("Please enter lend period in days: "));
+                    currentUser.getLoanPeriod());
+            System.out.println("Book added to your list of loans");
         } else {
             if (book == null) {
                 System.out.println("Unknown book ID!");
