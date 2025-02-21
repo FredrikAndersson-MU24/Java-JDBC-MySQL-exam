@@ -58,4 +58,15 @@ public abstract class User {
                 ", loanPeriod=" + loanPeriod +
                 '}';
     }
+
+    /**
+     * Alternative toString
+     * @return ID, Name, Username, Admin Yes/No as String
+     */
+    public String toStringUsers() {
+        return "User ID: " + id +
+                "\tName: " + name +
+                "\tUsername: " + username +
+                "\tAdmin: " + ( isAdmin() ? "Yes" : "No" );
+    }
 }
