@@ -102,6 +102,11 @@ public class LoanDAO {
         return listOfLoans;
     }
 
+    /**
+     * Returns the users active loans from the database.
+     * @param user
+     * @return A list of the users active loans.
+     */
     public List<Loan> getUsersActiveLoans(User user) {
         String query = "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
                 "JOIN books ON loans.book_id = books.id " +
@@ -121,6 +126,11 @@ public class LoanDAO {
         return listOfLoans;
     }
 
+
+    /**
+     *  Get all active loans from the database
+     * @return A list of all loans with status returned = false
+     */
     public List<Loan> getAllActiveLoans() {
         String query = "SELECT loans.id, loans.user_id, loans.book_id, books.title, loans.loan_date, loans.return_date, loans.returned from loans " +
                 "JOIN books ON loans.book_id = books.id " +
@@ -139,6 +149,12 @@ public class LoanDAO {
         return listOfLoans;
     }
 
+    /**
+     *
+     * @param rs
+     * @return A Loan with seven arguments
+     * @throws SQLException
+     */
     private static Loan createLoanFromResultSet(ResultSet rs) throws SQLException {
         return new Loan(
                 rs.getInt(1),
