@@ -40,6 +40,32 @@ public class UserDAO {
         return usernames;
     }
 
+    /**
+     *  Get a list of all registered users.
+     * @return List of AdminUser or RegisteredUser objects
+     */
+    public List<User> getAllUsers(){
+        String query = "SELECT id, name, username, admin_rights FROM users;";
+        List<User> listOfUsers = new ArrayList<>();
+        try{
+            Statement getUsernames = conn.createStatement();
+            ResultSet rs = getUsernames.executeQuery(query);
+            while(rs.next()){
+                if(rs.getBoolean(4)){
+                    listOfUsers.add(new AdminUser(rs.getInt(1), rs.getString(2),rs.getString(3)));
+                }
+                if (!rs.getBoolean(4)){
+                    listOfUsers.add(new RegisteredUser(rs.getInt(1), rs.getString(2),rs.getString(3)));
+                }
+            }
+            System.out.println("Successfully retrieved usernames from DB");
+        } catch (SQLException e){
+            System.out.println("Failed to get all users!");
+            e.printStackTrace();
+        }
+        return listOfUsers;
+    }
+
     public String getPassword(String username){
         String query = "SELECT password FROM users WHERE username = ?;";
         String password = "";
