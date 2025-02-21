@@ -94,6 +94,7 @@ public class Menu {
                     6. Add user
                     7. View all active loans
                     8. View all loans
+                    9. View all registered users
                     0. Log out
                     """.formatted(currentUser.getName()));
             switch (choice) {
@@ -120,6 +121,9 @@ public class Menu {
                     break;
                 case 8:
                     getAllLoans();
+                    break;
+                case 9:
+                    getAllUsers();
                     break;
                 case 0:
                     currentUser = null;
@@ -274,6 +278,14 @@ public class Menu {
         return userDAO.getUsernames().contains(newUsername.toLowerCase());
     }
 
+    private static void getAllUsers(){
+        List<User> listOfUsers = userDAO.getAllUsers();
+        if (listOfUsers.isEmpty()) {
+            System.out.println("No registered users found!");
+        } else {
+            listOfUsers.forEach(u -> System.out.println(u.toStringUsers()));
+        }
+    }
 
     /**
      * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
