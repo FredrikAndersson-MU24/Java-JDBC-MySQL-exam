@@ -85,13 +85,13 @@ public class UserDAO {
 
     /**
      * Use to get a user object from the database. Intended use case is setting the current user when logging in.
-     * @param username
+     * @param username Provide username to find in database.
      * @return AdminUser or RegisteredUser object
      */
     public User getUser(String username){
         String query = "SELECT * FROM users WHERE username = ?";
         User user = null;
-        boolean isAdmin = false;
+        boolean isAdmin;
         try {
             PreparedStatement getUser = conn.prepareStatement(query);
             getUser.setString(1, username);
