@@ -166,11 +166,21 @@ public class Menu {
     }
 
     private static void getUsersActiveLoans(){
-        loanDAO.getUsersActiveLoans(currentUser).forEach(l -> System.out.println(l.toStringAsUser()));
+        List<Loan> loans = loanDAO.getUsersActiveLoans(currentUser);
+        if (loans.isEmpty()) {
+            System.out.println("You have no active loans.");
+        } else {
+            loans.forEach(l -> System.out.println(l.toStringAsUser()));
+        }
     }
 
     private static void getActiveLoans() {
-        loanDAO.getAllActiveLoans().forEach(l -> System.out.println(l));
+        List<Loan> loans = loanDAO.getAllActiveLoans();
+        if (loans.isEmpty()) {
+            System.out.println("There are no active loans.");
+        } else {
+            loans.forEach(l -> System.out.println(l));
+        }
     }
 
     private static void addAuthor() {
