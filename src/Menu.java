@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Locale;
 
 public class Menu {
 
@@ -47,7 +46,11 @@ public class Menu {
                     """);
             switch ( choice) {
                 case 1:
-                    authenticateLogin();
+                    switch (authenticateLogin()) {
+                        case 1 -> userMenu();
+                        case 2 -> adminMenu();
+                        case 0 -> {}
+                    }
                     break;
                 case 2:
                     addUser();
@@ -233,26 +236,60 @@ public class Menu {
         return userDAO.getUsernames().contains(newUsername);
     }
 
-    private static void authenticateLogin(){
+
+    /**
+     * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
+     * If the user inputs the number zero in either prompts the login attempt is aborted.
+     *
+     * @return An integer to use in a switch statement.
+     * 0 if login is aborted.
+     * 1 if RegisteredUser.
+     * 2 if AdminUser.
+     */
+    private static int authenticateLogin() {
+        int choice = 0; // Value to return if login is aborted at any point
+        String username = authenticateUsername();
+        if (!username.equals("0")) {
+            if (authenticatePassword(username)) {
+                currentUser = userDAO.getUser(username);
+                choice = (currentUser instanceof AdminUser ? 2 : 1);//instanceof just to practice using it. Could also have used .isAdmin()
+            }
+        }
+        return choice;
+    }
+
+    private static String authenticateUsername() {
         String username;
-        String password;
-        while(true){
-            username = InputHandler.getString("Please enter your username: ");
-            if (usernameExists(username.toLowerCase())){
+        while (true) {
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ");
+            if (username.equals("0")) {
+                break;
+            } else if (userDAO.getUsernames().contains(username.toLowerCase())) {
                 break;
             }
             System.out.println("User not found!");
         }
-        while(true) {
-            password = InputHandler.getString("Please enter your password (case sensitive): ");
-            if (userDAO.getPassword(username).equals(password)){
+        return username;
+    }
+
+    /**
+     *
+     * @param username
+     * @return
+     */
+    private static boolean authenticatePassword(String username) {
+        boolean result;
+        while (true) {
+            String password = InputHandler.getString("Please enter your password  (or 0(zero) to abort login attempt): ");
+            if (password.equals("0")) {
+                result = false;
+                break;
+            } else if (userDAO.getPassword(username).equals(password)) {
+                result = true;
                 break;
             }
-            System.out.println("Wrong password! ");
+            System.out.println("Wrong password! Note that the password is case sensitive.");
         }
-        currentUser = userDAO.getUser(username);
-        System.out.println(currentUser);
+        return result;
     }
 }
-
- // TODO Send user to menu after authentication
