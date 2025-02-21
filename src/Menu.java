@@ -22,7 +22,8 @@ public class Menu {
                     switch (authenticateLogin()) {
                         case 1 -> userMenu();
                         case 2 -> adminMenu();
-                        case 0 -> {}
+                        case 0 -> {
+                        }
                     }
                     break;
                 case 2:
@@ -83,6 +84,8 @@ public class Menu {
                     4. Add author
                     5. List all authors
                     6. Add user
+                    7. View all active loans
+                    8. View all loans
                     0. Go back
                     """.formatted(currentUser.getName()));
             switch (choice) {
@@ -103,6 +106,12 @@ public class Menu {
                     break;
                 case 6:
                     addUserAsAdmin();
+                    break;
+                case 7:
+                    getActiveLoans();
+                    break;
+                case 8:
+                    getAllLoans();
                     break;
                 case 0:
                     currentUser = null;
@@ -165,7 +174,7 @@ public class Menu {
         loanDAO.getAllLoans().forEach(l -> System.out.println(l));
     }
 
-    private static void getUsersActiveLoans(){
+    private static void getUsersActiveLoans() {
         List<Loan> loans = loanDAO.getUsersActiveLoans(currentUser);
         if (loans.isEmpty()) {
             System.out.println("You have no active loans.");
@@ -264,7 +273,6 @@ public class Menu {
     }
 
     /**
-     *
      * @param username
      * @return
      */
