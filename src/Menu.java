@@ -57,7 +57,7 @@ public class Menu {
                     returnLoan();
                     break;
                 case 3:
-                    getActiveLoans();
+                    getUsersActiveLoans();
                     break;
                 case 4:
                     getAllBooks();
@@ -165,8 +165,12 @@ public class Menu {
         loanDAO.getAllLoans().forEach(l -> System.out.println(l));
     }
 
+    private static void getUsersActiveLoans(){
+        loanDAO.getUsersActiveLoans(currentUser).forEach(l -> System.out.println(l.toStringAsUser()));
+    }
+
     private static void getActiveLoans() {
-        loanDAO.getActiveLoans().forEach(l -> System.out.println(l));
+        loanDAO.getAllActiveLoans().forEach(l -> System.out.println(l));
     }
 
     private static void addAuthor() {
