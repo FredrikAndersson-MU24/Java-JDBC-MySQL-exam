@@ -229,37 +229,49 @@ public class Menu {
     private static void addUser() {
         String name = InputHandler.getString("Please enter your name: ");
         String username;
+        String password;
         while (true) {
             username = InputHandler.getString("Please enter your username: ");
-            if (!usernameExists(username.toLowerCase())) {
+            if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
-        String password = InputHandler.getString("Please enter your password: ");
-        int loanPeriod = 28;
-        boolean admin = false;
-        userDAO.addUser(name, username, password, loanPeriod, admin);
+        while (true) {
+            password = InputHandler.getString("Please enter your password: ");
+            if (!password.equalsIgnoreCase(username)){
+                break;
+            }
+            System.out.println("Password can not be the same as your username!");
+        }
+        userDAO.addUser(name, username, password, 28, false);
     }
 
     private static void addUserAsAdmin() {
         String name = InputHandler.getString("Please enter name: ");
         String username;
+        String password;
         while (true) {
             username = InputHandler.getString("Please enter username: ");
-            if (!usernameExists(username.toLowerCase())) {
+            if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
-        String password = InputHandler.getString("Please enter password: ");
+        while (true) {
+            password = InputHandler.getString("Please enter password: ");
+            if (!password.equalsIgnoreCase(username)){
+                break;
+            }
+            System.out.println("Password can not be the same as username!");
+        }
         int loanPeriod = InputHandler.getPositiveInt("Please enter loan period (default 28):");
         boolean admin = InputHandler.getBoolean("Should this be an admin user? Y/N: ");
         userDAO.addUser(name, username, password, loanPeriod, admin);
     }
 
     private static boolean usernameExists(String newUsername) {
-        return userDAO.getUsernames().contains(newUsername);
+        return userDAO.getUsernames().contains(newUsername.toLowerCase());
     }
 
 
