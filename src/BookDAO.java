@@ -38,6 +38,24 @@ public class BookDAO {
         return book;
     }
 
+    public List<Book> getBooksByFreeTextSearch(String searchString){
+        String query = "SELECT books.id AS 'Book ID', books.title AS Title, authors.id AS 'Author ID', authors.name AS 'Author', books.available AS Available FROM books\n" +
+                "\tJOIN authors ON authors.id = books.author_id WHERE title LIKE ?;";
+        List<Book> listOfBooks = new ArrayList<>();
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1,"%" + searchString + "%");
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()) {
+                listOfBooks.add(createBookFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get search results!");
+            e.printStackTrace();
+        }
+        return listOfBooks;
+    }
+
     public List<Book> getAllBooks() {
         String query = "SELECT books.id AS 'Book ID', books.title AS Title, authors.id AS 'Author ID', authors.name AS 'Author', books.available AS Available FROM books\n" +
                 "\tJOIN authors ON authors.id = books.author_id;";
@@ -46,7 +64,7 @@ public class BookDAO {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                listOfBooks.add(new Book(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getBoolean(5)));
+                listOfBooks.add(createBookFromResultSet(rs));
             }
         } catch (SQLException e) {
             System.out.println("Failed to get all books!");
@@ -67,6 +85,15 @@ public class BookDAO {
             System.out.println("Failed to delete book");
             e.printStackTrace();
         }
+    }
+
+    private Book createBookFromResultSet(ResultSet rs) throws SQLException {
+        return new Book(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getString(4),
+                rs.getBoolean(5));
     }
 
 }

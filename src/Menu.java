@@ -48,7 +48,9 @@ public class Menu {
                     2. Return a book
                     3. Check for active loans
                     4. List all available books
-                    0. Go back
+                    5. Search books by title
+                    6. Search authors
+                    0. Log out
                     """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
@@ -62,6 +64,12 @@ public class Menu {
                     break;
                 case 4:
                     getAllBooks();
+                    break;
+                case 5:
+                    getBooksByFreeTextSearch();
+                    break;
+                case 6:
+                    getAuthorsByFreeTextSearch();
                     break;
                 case 0:
                     currentUser = null;
@@ -86,7 +94,7 @@ public class Menu {
                     6. Add user
                     7. View all active loans
                     8. View all loans
-                    0. Go back
+                    0. Log out
                     """.formatted(currentUser.getName()));
             switch (choice) {
                 case 1:
@@ -130,6 +138,15 @@ public class Menu {
     private static void getAllBooks() {
         List<Book> listOfBooks = bookDAO.getAllBooks();
         listOfBooks.forEach(b -> System.out.println(b));
+    }
+
+    private static void getBooksByFreeTextSearch() {
+        List<Book> listOfBooks = bookDAO.getBooksByFreeTextSearch(InputHandler.getString("Please enter search term: "));
+        if (listOfBooks.isEmpty()){
+            System.out.println("No match for search term.");
+        } else {
+            listOfBooks.forEach(b -> System.out.println(b));
+        }
     }
 
     private static void deleteBook() {
@@ -198,6 +215,15 @@ public class Menu {
 
     private static void getAuthors() {
         authorDAO.getAuthors().forEach(a -> System.out.println(a));
+    }
+
+    private static void getAuthorsByFreeTextSearch() {
+        List<Author> listOfAuthors = authorDAO.getAuthorsByFreeTextSearch(InputHandler.getString("Please enter search term: "));
+        if (listOfAuthors.isEmpty()){
+            System.out.println("No match.");
+        } else {
+            listOfAuthors.forEach(a -> System.out.println(a));
+        }
     }
 
     private static void addUser() {
