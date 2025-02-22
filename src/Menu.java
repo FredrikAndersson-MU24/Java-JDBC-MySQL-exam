@@ -150,7 +150,7 @@ public class Menu {
 
     private static void getAllBooks() {
         List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(b -> System.out.println(b));
+        listOfBooks.forEach(System.out::println);
     }
 
     private static void getAllBookIdsAndTitles() {
@@ -163,7 +163,7 @@ public class Menu {
         if (listOfBooks.isEmpty()){
             System.out.println("No match for search term.");
         } else {
-            listOfBooks.forEach(b -> System.out.println(b));
+            listOfBooks.forEach(System.out::println);
         }
     }
 
@@ -238,7 +238,7 @@ public class Menu {
         if (loans.isEmpty()) {
             System.out.println("There are no active loans.");
         } else {
-            loans.forEach(l -> System.out.println(l));
+            loans.forEach(System.out::println);
         }
     }
 
@@ -251,7 +251,7 @@ public class Menu {
     }
 
     private static void getAuthors() {
-        authorDAO.getAuthors().forEach(a -> System.out.println(a));
+        authorDAO.getAuthors().forEach(System.out::println);
     }
 
     private static void getAuthorsByFreeTextSearch() {
@@ -259,7 +259,7 @@ public class Menu {
         if (listOfAuthors.isEmpty()){
             System.out.println("No match.");
         } else {
-            listOfAuthors.forEach(a -> System.out.println(a));
+            listOfAuthors.forEach(System.out::println);
         }
     }
 
@@ -394,6 +394,6 @@ public class Menu {
         return result;
     }
 
-    // TODO Prohibit entering the same author twice
+    // TODO Prohibit entering an author that already exists
     // TODO Error handling when trying to delete a book on loan
 }
