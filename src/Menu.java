@@ -221,7 +221,7 @@ public class Menu {
     }
 
     private static void getAllLoans() {
-        loanDAO.getAllLoans().forEach(l -> System.out.println(l));
+        loanDAO.getAllLoans().forEach(l -> System.out.println(l.toStringAsAdmin()));
     }
 
     private static void getUsersActiveLoans() {
