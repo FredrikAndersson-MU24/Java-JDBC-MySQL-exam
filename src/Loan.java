@@ -37,7 +37,7 @@ public class Loan {
                 "\tTitle: " + bookTitle +
                 "\tLoan date: " + loanDate +
                 "\tReturn date: " + returnDate +
-                "\tReturned: " + (returned ? "Yes": "No");
+                "\tReturned: " + (returned ? "Yes" : "No");
     }
 
     public String toStringAsUser() {
@@ -48,4 +48,16 @@ public class Loan {
                 "\tReturn date: " + returnDate +
                 "\tLate: " + (returnDate.isBefore(LocalDate.now()) ? "Yes" : "No");
     }
+
+    public String toStringAsAdmin() {
+        return "Loan ID: " + id +
+                "\tUser Id: " + userId +
+                "\tBook ID:" + bookId +
+                "\tLoan date: " + loanDate +
+                "\tReturn date: " + returnDate +
+                "\tReturned: " + (returned ? "Yes" : "No") +
+                "\tLate: " + (returnDate.isBefore(LocalDate.now()) && !returned ? "Yes" : "No");
+    }
+
+    // TODO Add actual return date to track late returns
 }
