@@ -74,8 +74,6 @@ public class BookDAO {
     }
 
     public void deleteBook(int id) {
-        List<Book> listOfBooks = getAllBooks();
-        listOfBooks.forEach(b -> System.out.println("ID: " + b.id + "Title: " + b.title));
         String query = "DELETE FROM books WHERE id = ?;";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
