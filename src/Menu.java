@@ -173,7 +173,22 @@ public class Menu {
         if (id == 0) {
             return;
         }
-        bookDAO.deleteBook(id);
+        Book book = bookDAO.getBookById(id);
+        if (book != null && book.isAvailable()) {
+            System.out.println(book.isAvailable());
+            bookDAO.deleteBook(id);
+            System.out.println("Book deleted.");
+        } else {
+            if (book == null) {
+                System.out.println("Unknown book ID!");
+                return;
+            }
+            if (!book.isAvailable()) {
+                System.out.println("Sorry, this book is on active loan and cannot be deleted at the moment.");
+                // TODO Choice to get reminder when book is returned
+            }
+        }
+
     }
 
     private static void lendBook() {
@@ -196,6 +211,7 @@ public class Menu {
             }
             if (!book.isAvailable()) {
                 System.out.println("Sorry, this book is not available right now.");
+                // TODO Put on waiting list and get notified when available
             }
         }
     }
