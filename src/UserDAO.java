@@ -58,7 +58,6 @@ public class UserDAO {
                     listOfUsers.add(new RegisteredUser(rs.getInt(1), rs.getString(2),rs.getString(3)));
                 }
             }
-            System.out.println("Successfully retrieved usernames from DB");
         } catch (SQLException e){
             System.out.println("Failed to get all users!");
             e.printStackTrace();

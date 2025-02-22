@@ -136,12 +136,26 @@ public class Menu {
     }
 
     public static void addBook() {
-        bookDAO.addBook(InputHandler.getString("Title"), InputHandler.getPositiveInt("Author ID"));
+        String title = InputHandler.getString("Please enter book title (or 0(zero) to abort):");
+        if (title.equals("0")){
+            return;
+        }
+        getAuthors();
+        int authorId = InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
+        if (authorId == 0){
+            return;
+        }
+        bookDAO.addBook(title, authorId);
     }
 
     private static void getAllBooks() {
         List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(b -> System.out.println(b));
+        listOfBooks.forEach(System.out::println);
+    }
+
+    private static void getAllBookIdsAndTitles() {
+        List<Book> listOfBooks = bookDAO.getAllBooks();
+        listOfBooks.forEach(b ->System.out.println("ID: " + b.id + "\tTitle: " + b.title));
     }
 
     private static void getBooksByFreeTextSearch() {
@@ -149,16 +163,26 @@ public class Menu {
         if (listOfBooks.isEmpty()){
             System.out.println("No match for search term.");
         } else {
-            listOfBooks.forEach(b -> System.out.println(b));
+            listOfBooks.forEach(System.out::println);
         }
     }
 
     private static void deleteBook() {
-        bookDAO.deleteBook(InputHandler.getPositiveInt("Please enter ID of the book you want to delete: "));
+        getAllBookIdsAndTitles();
+        int id = InputHandler.getPositiveInt("Please enter ID of the book you want to delete (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        bookDAO.deleteBook(id);
     }
 
     private static void lendBook() {
-        Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
+        getAllBooks();
+        int id = InputHandler.getPositiveInt("Please enter book ID (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        Book book = bookDAO.getBookById(id);
         if (book != null && book.isAvailable()) {
             loanDAO.addLoan(
                     currentUser.getId(),
@@ -177,7 +201,12 @@ public class Menu {
     }
 
     private static void returnLoan() {
-        Book book = bookDAO.getBookById(InputHandler.getPositiveInt("Please enter book ID: "));
+        getUsersActiveLoans();
+        int id = InputHandler.getPositiveInt("Please enter book ID (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        Book book = bookDAO.getBookById(id);
         if (book != null && !book.isAvailable()) {
             loanDAO.returnLoan(book.getId());
         } else {
@@ -192,7 +221,7 @@ public class Menu {
     }
 
     private static void getAllLoans() {
-        loanDAO.getAllLoans().forEach(l -> System.out.println(l));
+        loanDAO.getAllLoans().forEach(l -> System.out.println(l.toStringAsAdmin()));
     }
 
     private static void getUsersActiveLoans() {
@@ -209,16 +238,20 @@ public class Menu {
         if (loans.isEmpty()) {
             System.out.println("There are no active loans.");
         } else {
-            loans.forEach(l -> System.out.println(l));
+            loans.forEach(System.out::println);
         }
     }
 
     private static void addAuthor() {
-        authorDAO.addAuthor(InputHandler.getString("Please enter the name of the author: "));
+        String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
+        if (author.equals("0")){
+            return;
+        }
+        authorDAO.addAuthor(author);
     }
 
     private static void getAuthors() {
-        authorDAO.getAuthors().forEach(a -> System.out.println(a));
+        authorDAO.getAuthors().forEach(System.out::println);
     }
 
     private static void getAuthorsByFreeTextSearch() {
@@ -226,23 +259,32 @@ public class Menu {
         if (listOfAuthors.isEmpty()){
             System.out.println("No match.");
         } else {
-            listOfAuthors.forEach(a -> System.out.println(a));
+            listOfAuthors.forEach(System.out::println);
         }
     }
 
     private static void addUser() {
-        String name = InputHandler.getString("Please enter your name: ");
+        String name = InputHandler.getString("Please enter your name (or 0(zero) to abort): ");
+        if (name.equals("0")){
+            return;
+        }
         String username;
         String password;
         while (true) {
-            username = InputHandler.getString("Please enter your username: ");
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort): ");
+            if (username.equals("0")){
+                return;
+            }
             if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
         while (true) {
-            password = InputHandler.getString("Please enter your password: ");
+            password = InputHandler.getString("Please enter your password (or 0(zero) to abort): ");
+            if (password.equals("0")){
+                return;
+            }
             if (!password.equalsIgnoreCase(username)){
                 break;
             }
@@ -252,18 +294,27 @@ public class Menu {
     }
 
     private static void addUserAsAdmin() {
-        String name = InputHandler.getString("Please enter name: ");
+        String name = InputHandler.getString("Please enter name (or 0(zero) to abort): ");
+        if (name.equals("0")){
+            return;
+        }
         String username;
         String password;
         while (true) {
-            username = InputHandler.getString("Please enter username: ");
+            username = InputHandler.getString("Please enter username (or 0(zero) to abort): ");
+            if (username.equals("0")){
+                return;
+            }
             if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
         while (true) {
-            password = InputHandler.getString("Please enter password: ");
+            password = InputHandler.getString("Please enter password (or 0(zero) to abort): ");
+            if (password.equals("0")){
+                return;
+            }
             if (!password.equalsIgnoreCase(username)){
                 break;
             }
@@ -342,4 +393,7 @@ public class Menu {
         }
         return result;
     }
+
+    // TODO Prohibit entering an author that already exists
+    // TODO Error handling when trying to delete a book on loan
 }
