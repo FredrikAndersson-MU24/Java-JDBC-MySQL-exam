@@ -168,7 +168,12 @@ public class Menu {
     }
 
     private static void deleteBook() {
-        bookDAO.deleteBook(InputHandler.getPositiveInt("Please enter ID of the book you want to delete: "));
+        getAllBookIdsAndTitles();
+        int id = InputHandler.getPositiveInt("Please enter ID of the book you want to delete (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        bookDAO.deleteBook(id);
     }
 
     private static void lendBook() {
@@ -238,7 +243,11 @@ public class Menu {
     }
 
     private static void addAuthor() {
-        authorDAO.addAuthor(InputHandler.getString("Please enter the name of the author: "));
+        String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
+        if (author.equals("0")){
+            return;
+        }
+        authorDAO.addAuthor(author);
     }
 
     private static void getAuthors() {
@@ -255,18 +264,27 @@ public class Menu {
     }
 
     private static void addUser() {
-        String name = InputHandler.getString("Please enter your name: ");
+        String name = InputHandler.getString("Please enter your name (or 0(zero) to abort): ");
+        if (name.equals("0")){
+            return;
+        }
         String username;
         String password;
         while (true) {
-            username = InputHandler.getString("Please enter your username: ");
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort): ");
+            if (username.equals("0")){
+                return;
+            }
             if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
         while (true) {
-            password = InputHandler.getString("Please enter your password: ");
+            password = InputHandler.getString("Please enter your password (or 0(zero) to abort): ");
+            if (password.equals("0")){
+                return;
+            }
             if (!password.equalsIgnoreCase(username)){
                 break;
             }
@@ -276,18 +294,27 @@ public class Menu {
     }
 
     private static void addUserAsAdmin() {
-        String name = InputHandler.getString("Please enter name: ");
+        String name = InputHandler.getString("Please enter name (or 0(zero) to abort): ");
+        if (name.equals("0")){
+            return;
+        }
         String username;
         String password;
         while (true) {
-            username = InputHandler.getString("Please enter username: ");
+            username = InputHandler.getString("Please enter username (or 0(zero) to abort): ");
+            if (username.equals("0")){
+                return;
+            }
             if (!usernameExists(username)) {
                 break;
             }
             System.out.println("Username already exists!");
         }
         while (true) {
-            password = InputHandler.getString("Please enter password: ");
+            password = InputHandler.getString("Please enter password (or 0(zero) to abort): ");
+            if (password.equals("0")){
+                return;
+            }
             if (!password.equalsIgnoreCase(username)){
                 break;
             }
