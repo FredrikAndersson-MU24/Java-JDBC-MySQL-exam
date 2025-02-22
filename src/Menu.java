@@ -153,6 +153,11 @@ public class Menu {
         listOfBooks.forEach(b -> System.out.println(b));
     }
 
+    private static void getAllBookIdsAndTitles() {
+        List<Book> listOfBooks = bookDAO.getAllBooks();
+        listOfBooks.forEach(b ->System.out.println("ID: " + b.id + "\tTitle: " + b.title));
+    }
+
     private static void getBooksByFreeTextSearch() {
         List<Book> listOfBooks = bookDAO.getBooksByFreeTextSearch(InputHandler.getString("Please enter search term: "));
         if (listOfBooks.isEmpty()){
