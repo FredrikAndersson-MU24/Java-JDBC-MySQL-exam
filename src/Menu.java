@@ -361,4 +361,7 @@ public class Menu {
         }
         return result;
     }
+
+    // TODO Prohibit entering the same author twice
+    // TODO Error handling when trying to delete a book on loan
 }
