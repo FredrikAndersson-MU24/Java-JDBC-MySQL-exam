@@ -5,7 +5,7 @@ public class Loan {
     int id;
     int userId;
     int bookId;
-    String title;
+    String bookTitle;
     LocalDate loanDate;
     LocalDate returnDate;
     boolean returned;
@@ -19,11 +19,11 @@ public class Loan {
         this.returned = returned;
     }
 
-    public Loan(int id, int userId, int bookId, String title, LocalDate loanDate, LocalDate returnDate, boolean returned) {
+    public Loan(int id, int userId, int bookId, String bookTitle, LocalDate loanDate, LocalDate returnDate, boolean returned) {
         this.id = id;
         this.userId = userId;
         this.bookId = bookId;
-        this.title = title;
+        this.bookTitle = bookTitle;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
         this.returned = returned;
@@ -34,7 +34,7 @@ public class Loan {
         return "ID: " + id +
                 "\tUser Id: " + userId +
                 "\tBook ID:" + bookId +
-                "\tTitle: " + title +
+                "\tTitle: " + bookTitle +
                 "\tLoan date: " + loanDate +
                 "\tReturn date: " + returnDate +
                 "\tReturned: " + (returned ? "Yes": "No");
@@ -43,7 +43,7 @@ public class Loan {
     public String toStringAsUser() {
         return "Loan ID: " + id +
                 "\tBook ID:" + bookId +
-                "\tTitle: " + title +
+                "\tTitle: " + bookTitle +
                 "\tLoan date: " + loanDate +
                 "\tReturn date: " + returnDate +
                 "\tLate: " + (returnDate.isBefore(LocalDate.now()) ? "Yes" : "No");
