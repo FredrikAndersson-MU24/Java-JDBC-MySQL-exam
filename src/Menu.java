@@ -344,7 +344,12 @@ public class Menu {
     }
 
     private static void getAuthors() {
-        authorDAO.getAuthors().forEach(System.out::println);
+        List<Author> listOfAuthors = authorDAO.getAuthors();
+        if (listOfAuthors.isEmpty()) {
+            System.out.println("There are no authors.");
+        } else {
+            printAuthorsAsTable(listOfAuthors);
+        }
     }
 
     private static void getAuthorsByFreeTextSearch() {
@@ -354,6 +359,14 @@ public class Menu {
         } else {
             listOfAuthors.forEach(System.out::println);
         }
+    }
+
+    private static void printAuthorsAsTable(List<Author> listOfAuthors) {
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s |", "Author ID", "Name");
+        System.out.println("\n-------------------------------------------------------------------");
+        listOfAuthors.forEach(l -> System.out.println(l.printAsTable()));
+        System.out.println("-------------------------------------------------------------------");
     }
 
     private static void addUser() {
