@@ -53,17 +53,13 @@ public abstract class AuthorService {
         }
         Author author = authorDAO.getAuthorById(id);
         if (author != null) {
-            authorDAO.deleteAuthor(id);
-            System.out.println("Book deleted.");
+            if (authorDAO.deleteAuthor(id)){
+                System.out.println("Author deleted successfully!");
+            } else {
+                System.out.println("Author on active loan. Cannot be deleted att the moment.");
+            }
         } else {
-            if (author == null) {
-                System.out.println("Unknown book ID!");
-                return;
-            }
-            if (!book.isAvailable()) {
-                System.out.println("Sorry, this book is on active loan and cannot be deleted at the moment.");
-                // TODO Choice to get reminder when book is returned
-            }
+                System.out.println("Unknown author ID!");
         }
     }
 
