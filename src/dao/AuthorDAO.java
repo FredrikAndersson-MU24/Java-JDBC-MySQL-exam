@@ -76,6 +76,23 @@ public class AuthorDAO {
         return listOfAuthors;
     }
 
+    public Author getAuthorById(int id) {
+        String query = "SELECT * FROM authors WHERE id = ?;";
+        Author author = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()) {
+                author = createAuthorFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get user by id!");
+            e.printStackTrace();
+        }
+        return  author;
+    }
+
     private Author createAuthorFromResultSet(ResultSet rs) throws SQLException {
         return new Author(
                 rs.getInt(1),
