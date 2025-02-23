@@ -59,14 +59,14 @@ public class AuthorDAO {
         return result;
     }
 
-    public List<Author> getAuthorsByFreeTextSearch(String searchString){
+    public List<Author> getAuthorsByFreeTextSearch(String searchString) {
         String query = "SELECT * FROM authors WHERE name LIKE ?;";
         List<Author> listOfAuthors = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1,"%" + searchString + "%");
+            stmt.setString(1, "%" + searchString + "%");
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 listOfAuthors.add(createAuthorFromResultSet(rs));
             }
         } catch (SQLException e) {
@@ -83,14 +83,14 @@ public class AuthorDAO {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 author = createAuthorFromResultSet(rs);
             }
         } catch (SQLException e) {
             System.out.println("Failed to get user by id!");
             e.printStackTrace();
         }
-        return  author;
+        return author;
     }
 
 
