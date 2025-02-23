@@ -29,7 +29,8 @@ CREATE TABLE loans (
     book_id int,
     loan_date DATE,
     return_date DATE,
-    returned BOOLEAN DEFAULT 0
+    returned BOOLEAN DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
     );
 
 INSERT INTO authors (name) VALUES
@@ -68,6 +69,8 @@ INSERT INTO books (title, author_id) VALUES
   ("War and Peace", 10),
   ("Anna Karenina", 10);
 
+UPDATE books SET available = 0 WHERE id = 2 OR id = 3 OR  id = 5 OR  id = 7 OR  id = 8 OR  id = 9 OR  id = 10;
+
 INSERT INTO users (name, username, password, loan_period, admin_rights) VALUES
   ("Alice Johnson", "alicej", "password1", NULL, true),
   ("Bob Smith", "bobsmith", "password2", NULL, true),
@@ -85,6 +88,6 @@ INSERT INTO loans (user_id, book_id, loan_date, return_date, returned) VALUES
   (4, 5, '2025-02-15', '2025-03-14', false),
   (5, 6, '2025-01-20', '2025-02-17', true),
   (5, 7, '2025-03-01', '2025-03-29', false),
-  (8, 8, '2025-02-01', '2025-02-28', false),
+  (5, 8, '2025-02-01', '2025-02-28', false),
   (6, 9, '2025-03-01', '2025-03-30', false),
   (6, 10, '2025-03-15', '2025-04-13', false);
