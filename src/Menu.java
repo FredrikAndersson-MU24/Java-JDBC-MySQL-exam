@@ -417,8 +417,8 @@ public class Menu {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean usernameExists(String newUsername) {
-        return userDAO.getUsernames().contains(newUsername.toLowerCase());
+    private static boolean usernameExists(String username) {
+        return userDAO.usernameExists(username.toLowerCase());
     }
 
     private static void getAllUsers() {
@@ -464,10 +464,10 @@ public class Menu {
     private static String authenticateUsername() {
         String username;
         while (true) {
-            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ");
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ").toLowerCase();
             if (username.equals("0")) {
                 break;
-            } else if (userDAO.getUsernames().contains(username.toLowerCase())) {
+            } else if (usernameExists(username)) {
                 break;
             }
             System.out.println("User not found!");
@@ -487,7 +487,7 @@ public class Menu {
             if (password.equals("0")) {
                 result = false;
                 break;
-            } else if (userDAO.getPassword(username).equals(password)) {
+            } else if (userDAO.passwordCorrect(username, password)) {
                 result = true;
                 break;
             }
