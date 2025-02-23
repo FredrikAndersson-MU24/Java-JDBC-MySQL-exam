@@ -1,3 +1,5 @@
+package model;
+
 import java.time.LocalDate;
 
 public class Loan {
@@ -32,10 +34,10 @@ public class Loan {
     @Override
     public String toString() {
         return "ID: " + id +
-                "\tUser Id: " + userId +
-                "\tBook ID:" + bookId +
+                "\tmodel.User Id: " + userId +
+                "\tmodel.Book ID:" + bookId +
                 "\tTitle: " + bookTitle +
-                "\tLoan date: " + loanDate +
+                "\tmodel.Loan date: " + loanDate +
                 "\tReturn date: " + returnDate +
                 "\tReturned: " + (returned ? "Yes" : "No");
     }
