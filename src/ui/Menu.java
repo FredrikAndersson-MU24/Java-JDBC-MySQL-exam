@@ -152,6 +152,7 @@ public class Menu {
                     1. Add author
                     2. List all authors
                     3. Search authors
+                    4. Delete author
                     
                     0. Go back
                     """);
@@ -164,6 +165,9 @@ public class Menu {
                     break;
                 case 3:
                     LibraryFacade.getAuthorsByFreeTextSearch();
+                    break;
+                case 4:
+                    LibraryFacade.deleteAuthor();
                     break;
                 case 0:
                     return;
