@@ -416,6 +416,7 @@ public class Menu {
         userDAO.addUser(name, username, password, loanPeriod, admin);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean usernameExists(String newUsername) {
         return userDAO.getUsernames().contains(newUsername.toLowerCase());
     }
