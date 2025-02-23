@@ -1,3 +1,5 @@
+package model;
+
 public abstract class User {
     private final int id;
     private final String name;
@@ -48,7 +50,7 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "model.User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", username='" + username + '\'' +

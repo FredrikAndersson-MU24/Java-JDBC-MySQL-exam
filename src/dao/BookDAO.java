@@ -1,3 +1,9 @@
+package dao;
+
+import model.Book;
+import util.*;
+
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +45,7 @@ public class BookDAO {
     }
 
     public List<Book> getBooksByFreeTextSearch(String searchString){
-        String query = "SELECT books.id AS 'Book ID', books.title AS Title, authors.id AS 'Author ID', authors.name AS 'Author', books.available AS Available FROM books\n" +
+        String query = "SELECT books.id AS 'model.Book ID', books.title AS Title, authors.id AS 'model.Author ID', authors.name AS 'model.Author', books.available AS Available FROM books\n" +
                 "\tJOIN authors ON authors.id = books.author_id WHERE title LIKE ?;";
         List<Book> listOfBooks = new ArrayList<>();
         try {
@@ -57,7 +63,7 @@ public class BookDAO {
     }
 
     public List<Book> getAllBooks() {
-        String query = "SELECT books.id AS 'Book ID', books.title AS Title, authors.id AS 'Author ID', authors.name AS 'Author', books.available AS Available FROM books\n" +
+        String query = "SELECT books.id AS 'model.Book ID', books.title AS Title, authors.id AS 'model.Author ID', authors.name AS 'model.Author', books.available AS Available FROM books\n" +
                 "\tJOIN authors ON authors.id = books.author_id;";
         List<Book> listOfBooks = new ArrayList<>();
         try {

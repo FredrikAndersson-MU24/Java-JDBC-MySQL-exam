@@ -1,3 +1,5 @@
+package model;
+
 public class Author {
     int id;
     String name;
