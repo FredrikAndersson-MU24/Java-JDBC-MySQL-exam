@@ -40,12 +40,11 @@ public class UserDAO {
      * false - username does not exist in the db
      */
     public boolean usernameExists(String username) {
-        String query = "SELECT * FROM users WHERE username = ?;";
+        String query = "SELECT * FROM users;";
         boolean result = false;
         try {
-            PreparedStatement usernameExist = conn.prepareStatement(query);
-            usernameExist.setString(1, username);
-            ResultSet rs = usernameExist.executeQuery();
+            Statement usernameExist = conn.createStatement();
+            ResultSet rs = usernameExist.executeQuery(query);
             while (rs.next()) {
                 if (rs.getString(3).equals(username)) {
                     result = true;
