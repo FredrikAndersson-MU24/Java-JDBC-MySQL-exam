@@ -86,17 +86,47 @@ public class Menu {
             int choice = InputHandler.getPositiveInt("""
                      --- Administration ---
                     --- Hi, %s! ---
+                    1. Books
+                    2. Authors
+                    3. Users
+                    4. Loans
+                    
+                    0. Log out
+                    """.formatted(currentUser.getName()));
+            switch (choice) {
+                case 1:
+                    adminBookMenu();
+                    break;
+                case 2:
+                    adminAuthorMenu();
+                    break;
+                case 3:
+                    adminUserMenu();
+                    break;
+                case 4:
+                    adminLoanMenu();
+                    break;
+                case 0:
+                    currentUser = null;
+                    return;
+                default:
+                    System.out.println("Please enter valid menu option.");
+                    break;
+            }
+        }
+    }
+
+    public static void adminBookMenu() {
+        while (true) {
+            int choice = InputHandler.getPositiveInt("""
+                     --- Book administration ---
                     1. Add a book
                     2. Delete a book
                     3. List all books
-                    4. Add author
-                    5. List all authors
-                    6. Add user
-                    7. View all active loans
-                    8. View all loans
-                    9. View all registered users
-                    0. Log out
-                    """.formatted(currentUser.getName()));
+                    4. Search books by title
+                    
+                    0. Go back
+                    """);
             switch (choice) {
                 case 1:
                     addBook();
@@ -108,25 +138,9 @@ public class Menu {
                     getBooks("all");
                     break;
                 case 4:
-                    addAuthor();
-                    break;
-                case 5:
-                    getAuthors();
-                    break;
-                case 6:
-                    addUserAsAdmin();
-                    break;
-                case 7:
-                    getActiveLoans();
-                    break;
-                case 8:
-                    getAllLoans();
-                    break;
-                case 9:
-                    getAllUsers();
+                    getBooksByFreeTextSearch();
                     break;
                 case 0:
-                    currentUser = null;
                     return;
                 default:
                     System.out.println("Please enter valid menu option.");
@@ -134,6 +148,86 @@ public class Menu {
             }
         }
     }
+
+    public static void adminAuthorMenu() {
+        while (true) {
+            int choice = InputHandler.getPositiveInt("""
+                     --- Author administration ---
+                    1. Add author
+                    2. List all authors
+                    3. Search authors
+
+                    0. Go back
+                    """);
+            switch (choice) {
+                case 1:
+                    addAuthor();
+                    break;
+                case 2:
+                    getAuthors();
+                    break;
+                case 3:
+                    getAuthorsByFreeTextSearch();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Please enter valid menu option.");
+                    break;
+            }
+        }
+    }
+
+    public static void adminUserMenu() {
+        while (true) {
+            int choice = InputHandler.getPositiveInt("""
+                     --- User administration ---
+                    1. Add user
+                    2. View all registered users
+                    
+                    0. Go back
+                    """);
+            switch (choice) {
+                case 1:
+                    addUserAsAdmin();
+                    break;
+                case 9:
+                    getAllUsers();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Please enter valid menu option.");
+                    break;
+            }
+        }
+    }
+
+    public static void adminLoanMenu() {
+        while (true) {
+            int choice = InputHandler.getPositiveInt("""
+                     --- Loan administration ---
+                    1. View all active loans
+                    2. View all loans
+                    
+                    0. Go back
+                    """);
+            switch (choice) {
+                case 1:
+                    getActiveLoans();
+                    break;
+                case 2:
+                    getAllLoans();
+                    break;
+                case 0:
+                    return;
+                default:
+                    System.out.println("Please enter valid menu option.");
+                    break;
+            }
+        }
+    }
+
 
     public static void addBook() {
         String title = InputHandler.getString("Please enter book title (or 0(zero) to abort):");
