@@ -137,12 +137,12 @@ public class Menu {
 
     public static void addBook() {
         String title = InputHandler.getString("Please enter book title (or 0(zero) to abort):");
-        if (title.equals("0")){
+        if (title.equals("0")) {
             return;
         }
         getAuthors();
         int authorId = InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
-        if (authorId == 0){
+        if (authorId == 0) {
             return;
         }
         bookDAO.addBook(title, authorId);
@@ -213,7 +213,7 @@ public class Menu {
 
     private static void getBooksByFreeTextSearch() {
         List<Book> listOfBooks = bookDAO.getBooksByFreeTextSearch(InputHandler.getString("Please enter search term: "));
-        if (listOfBooks.isEmpty()){
+        if (listOfBooks.isEmpty()) {
             System.out.println("No match for search term.");
         } else {
             printAllBooksAsTable(listOfBooks);
@@ -337,7 +337,7 @@ public class Menu {
 
     private static void addAuthor() {
         String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
-        if (author.equals("0")){
+        if (author.equals("0")) {
             return;
         }
         authorDAO.addAuthor(author);
@@ -354,7 +354,7 @@ public class Menu {
 
     private static void getAuthorsByFreeTextSearch() {
         List<Author> listOfAuthors = authorDAO.getAuthorsByFreeTextSearch(InputHandler.getString("Please enter search term: "));
-        if (listOfAuthors.isEmpty()){
+        if (listOfAuthors.isEmpty()) {
             System.out.println("No match.");
         } else {
             printAuthorsAsTable(listOfAuthors);
@@ -371,14 +371,14 @@ public class Menu {
 
     private static void addUser() {
         String name = InputHandler.getString("Please enter your name (or 0(zero) to abort): ");
-        if (name.equals("0")){
+        if (name.equals("0")) {
             return;
         }
         String username;
         String password;
         while (true) {
             username = InputHandler.getString("Please enter your username (or 0(zero) to abort): ");
-            if (username.equals("0")){
+            if (username.equals("0")) {
                 return;
             }
             if (!usernameExists(username)) {
@@ -388,10 +388,10 @@ public class Menu {
         }
         while (true) {
             password = InputHandler.getString("Please enter your password (or 0(zero) to abort): ");
-            if (password.equals("0")){
+            if (password.equals("0")) {
                 return;
             }
-            if (!password.equalsIgnoreCase(username)){
+            if (!password.equalsIgnoreCase(username)) {
                 break;
             }
             System.out.println("Password can not be the same as your username!");
@@ -401,14 +401,14 @@ public class Menu {
 
     private static void addUserAsAdmin() {
         String name = InputHandler.getString("Please enter name (or 0(zero) to abort): ");
-        if (name.equals("0")){
+        if (name.equals("0")) {
             return;
         }
         String username;
         String password;
         while (true) {
             username = InputHandler.getString("Please enter username (or 0(zero) to abort): ");
-            if (username.equals("0")){
+            if (username.equals("0")) {
                 return;
             }
             if (!usernameExists(username)) {
@@ -418,10 +418,10 @@ public class Menu {
         }
         while (true) {
             password = InputHandler.getString("Please enter password (or 0(zero) to abort): ");
-            if (password.equals("0")){
+            if (password.equals("0")) {
                 return;
             }
-            if (!password.equalsIgnoreCase(username)){
+            if (!password.equalsIgnoreCase(username)) {
                 break;
             }
             System.out.println("Password can not be the same as username!");
