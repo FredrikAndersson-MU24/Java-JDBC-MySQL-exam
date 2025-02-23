@@ -216,7 +216,7 @@ public class Menu {
         if (listOfBooks.isEmpty()){
             System.out.println("No match for search term.");
         } else {
-            listOfBooks.forEach(System.out::println);
+            printAllBooksAsTable(listOfBooks);
         }
     }
 
@@ -357,7 +357,7 @@ public class Menu {
         if (listOfAuthors.isEmpty()){
             System.out.println("No match.");
         } else {
-            listOfAuthors.forEach(System.out::println);
+            printAuthorsAsTable(listOfAuthors);
         }
     }
 
