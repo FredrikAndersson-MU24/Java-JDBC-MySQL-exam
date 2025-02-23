@@ -1,10 +1,18 @@
+package dao;
+
+import model.AdminUser;
+import model.RegisteredUser;
+import model.User;
+import util.*;
+
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
 
-    private final Connection conn = Database.getConnection();
+    private final Connection conn = LibraryFacade.getConnection();
 
     /**
      * Add a new row to the user table in the database
@@ -114,7 +122,7 @@ public class UserDAO {
      * Get a user object from the database. Intended use case is setting the current user when logging in.
      *
      * @param username Provide username to find in database.
-     * @return AdminUser or RegisteredUser object
+     * @return model.AdminUser or model.RegisteredUser object
      */
     public User getUser(String username) {
         String query = "SELECT * FROM users WHERE username = ?";

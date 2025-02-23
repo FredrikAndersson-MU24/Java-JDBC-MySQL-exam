@@ -1,3 +1,10 @@
+package service;
+
+import dao.BookDAO;
+import model.Book;
+import util.*;
+
+
 import java.util.List;
 
 public class BookService {
@@ -10,7 +17,7 @@ public class BookService {
             return;
         }
         LibraryFacade.getAuthors();
-        int authorId = InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
+        int authorId = util.InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
         if (authorId == 0) {
             return;
         }
@@ -55,7 +62,6 @@ public class BookService {
         }
         Book book = bookDAO.getBookById(id);
         if (book != null && book.isAvailable()) {
-            System.out.println(book.isAvailable());
             bookDAO.deleteBook(id);
             System.out.println("Book deleted.");
         } else {

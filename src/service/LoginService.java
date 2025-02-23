@@ -1,3 +1,10 @@
+package service;
+
+import dao.UserDAO;
+import model.AdminUser;
+import model.User;
+import util.*;
+
 public abstract  class LoginService {
 
     static UserDAO userDAO = new UserDAO();
@@ -10,8 +17,8 @@ public abstract  class LoginService {
      *
      * @return An integer to use in a switch statement.
      * 0 if login is aborted.
-     * 1 if RegisteredUser.
-     * 2 if AdminUser.
+     * 1 if model.RegisteredUser.
+     * 2 if model.AdminUser.
      */
     public static int authenticateLogin() {
         int choice = 0; // Return value if login is aborted at any point
@@ -60,5 +67,11 @@ public abstract  class LoginService {
         return result;
     }
 
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 
+    public static void setCurrentUser(User currentUser) {
+        LoginService.currentUser = currentUser;
+    }
 }

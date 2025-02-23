@@ -1,3 +1,12 @@
+package service;
+
+import dao.BookDAO;
+import dao.LoanDAO;
+import model.Book;
+import model.Loan;
+import util.*;
+
+
 import java.util.List;
 
 public abstract class LoanService {

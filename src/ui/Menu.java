@@ -1,3 +1,7 @@
+package ui;
+
+import util.*;
+
 public class Menu {
 
     public static void userLoginMenu() {
@@ -6,6 +10,7 @@ public class Menu {
                     --- User Login ---
                     1. Login as registered user or admin
                     2. Register as user
+                    
                     0. Quit
                     """);
             switch (choice) {
@@ -40,6 +45,7 @@ public class Menu {
                     4. List all available books
                     5. Search books by title
                     6. Search authors
+                    
                     0. Log out
                     """.formatted(LibraryFacade.getCurrentUser().getName()));
             switch (choice) {
@@ -181,7 +187,7 @@ public class Menu {
                 case 1:
                     LibraryFacade.addUserAsAdmin();
                     break;
-                case 9:
+                case 2:
                     LibraryFacade.getAllUsers();
                     break;
                 case 0:

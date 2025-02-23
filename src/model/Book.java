@@ -1,3 +1,5 @@
+package model;
+
 public class Book {
     int id;
     String title;
@@ -24,10 +26,10 @@ public class Book {
     @Override
     public String toString() {
         return "Title: " + title +
-                "\nAuthor : " + author +
+                "\nmodel.Author : " + author +
                 "\nAvailable: " + (available ? "Yes" : "No") +
-                "\nBook ID: " + id +
-                "\nAuthor ID: " + authorId;
+                "\nmodel.Book ID: " + id +
+                "\nmodel.Author ID: " + authorId;
     }
 
     public String printAsTable() {

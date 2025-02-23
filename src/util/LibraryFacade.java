@@ -1,4 +1,9 @@
-import java.util.List;
+package util;
+
+import model.User;
+import service.*;
+
+import java.sql.Connection;
 
 public abstract class LibraryFacade {
 
@@ -40,11 +45,11 @@ public abstract class LibraryFacade {
     }
 
     public static User getCurrentUser() {
-        return LoginService.currentUser;
+        return LoginService.getCurrentUser();
     }
 
     public static void setCurrentUserNull() {
-        LoginService.currentUser = null;
+        LoginService.setCurrentUser(null);
     }
 
 
@@ -85,6 +90,12 @@ public abstract class LibraryFacade {
 
     public static void deleteBook() {
         BookService.deleteBook();
+    }
+
+    // Database
+
+    public static Connection getConnection(){
+        return Database.getConnection();
     }
 
 

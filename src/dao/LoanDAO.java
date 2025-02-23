@@ -1,3 +1,10 @@
+package dao;
+
+import model.Loan;
+import model.User;
+import util.*;
+
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -62,7 +69,7 @@ public class LoanDAO {
             setLoanReturned.executeUpdate();
 
             conn.commit();
-            System.out.println("Book returned successfully!");
+            System.out.println("model.Book returned successfully!");
         } catch (SQLException e) {
             System.out.println("Failed to execute return");
             e.printStackTrace();
@@ -152,7 +159,7 @@ public class LoanDAO {
     /**
      *
      * @param rs
-     * @return A Loan with seven arguments
+     * @return A model.Loan with seven arguments
      * @throws SQLException
      */
     private static Loan createLoanFromResultSet(ResultSet rs) throws SQLException {

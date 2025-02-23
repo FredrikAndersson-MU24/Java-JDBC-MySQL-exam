@@ -1,3 +1,9 @@
+package service;
+
+import dao.UserDAO;
+import model.User;
+import util.*;
+
 import java.util.List;
 
 public class UserService {
@@ -80,7 +86,7 @@ public class UserService {
         }
     }
 
-    public static void printUsersAsTable(List<User> listOfUsers) {
+    private static void printUsersAsTable(List<User> listOfUsers) {
         System.out.println("-------------------------------------------------------------------------------------------------------");
         System.out.printf("| %-10s | %-50s | %-20s | %-10s |", "User ID", "Name", "Username", "Admin");
         System.out.println("\n-------------------------------------------------------------------------------------------------------");
