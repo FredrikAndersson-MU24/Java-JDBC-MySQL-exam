@@ -63,7 +63,7 @@ public class Menu {
                     getUsersActiveLoans();
                     break;
                 case 4:
-                    getAllBooks();
+                    getBooks("available");
                     break;
                 case 5:
                     getBooksByFreeTextSearch();
@@ -105,7 +105,7 @@ public class Menu {
                     deleteBook();
                     break;
                 case 3:
-                    getAllBooks();
+                    getBooks("all");
                     break;
                 case 4:
                     addAuthor();
@@ -148,14 +148,67 @@ public class Menu {
         bookDAO.addBook(title, authorId);
     }
 
-    private static void getAllBooks() {
+    /**
+     *  Gets all books from database. Argument states what to print. Prints as a table.
+     * @param type
+     * available - only books that are available
+     * all - all books regardless of status
+     * idAndTitle - print all books, but only ID and title.
+     */
+    private static void getBooks(String type) {
         List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(System.out::println);
+        if (listOfBooks.isEmpty()) {
+            System.out.println("There are no books.");
+            return;
+        }
+        switch (type) {
+            case "all" -> printAllBooksAsTable(listOfBooks);
+            case "available" -> printAvailableBooksAsTable(listOfBooks);
+            case "idAndTitle" -> printBookIdAndTitleAsTable(listOfBooks);
+        }
     }
 
-    private static void getAllBookIdsAndTitles() {
-        List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(b ->System.out.println("ID: " + b.id + "\tTitle: " + b.title));
+
+//    private static void getAllBookIdsAndTitles() {
+//        List<Book> listOfBooks = bookDAO.getAllBooks();
+//        if (listOfBooks.isEmpty()) {
+//            System.out.println("There are no books.");
+//            return;
+//        }
+//        printBookIdAndTitleAsTable(listOfBooks);
+//    }
+
+    private static void printAvailableBooksAsTable(List<Book> listOfBooks) {
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
+        System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
+//        for (Book b : listOfBooks){
+//            if (b.isAvailable()) {
+//                System.out.println(b.printAsTable());
+//                System.out.println("test");
+//        }}
+        listOfBooks.forEach(b -> {
+            if (b.isAvailable()) {
+                System.out.println(b.printAsTable());
+            }});
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void printAllBooksAsTable(List<Book> listOfBooks) {
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
+        System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
+        listOfBooks.forEach(b -> System.out.println(b.printAsTable()));
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+
+    private static void printBookIdAndTitleAsTable(List<Book> listOfBooks) {
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s |", "Book ID", "Title");
+        System.out.println("\n-------------------------------------------------------------------");
+        listOfBooks.forEach(b -> System.out.println(b.printIdAndTitleAsTable()));
+        System.out.println("-------------------------------------------------------------------");
     }
 
     private static void getBooksByFreeTextSearch() {
@@ -168,7 +221,7 @@ public class Menu {
     }
 
     private static void deleteBook() {
-        getAllBookIdsAndTitles();
+        getBooks("idAndTitle");
         int id = InputHandler.getPositiveInt("Please enter ID of the book you want to delete (or 0(zero) to abort): ");
         if (id == 0) {
             return;
@@ -192,7 +245,7 @@ public class Menu {
     }
 
     private static void lendBook() {
-        getAllBooks();
+        getBooks("available");
         int id = InputHandler.getPositiveInt("Please enter book ID (or 0(zero) to abort): ");
         if (id == 0) {
             return;
