@@ -85,7 +85,14 @@ public class UserDAO {
         return listOfUsers;
     }
 
-    public String getPassword(String username){
+    /**
+     * Check if provided username and password matches
+     *
+     * @param username
+     * @return true - password correct
+     * false - password incorrect
+     */
+    public boolean passwordCorrect(String username, String password) {
         String query = "SELECT password FROM users WHERE username = ?;";
         String password = "";
         try {
