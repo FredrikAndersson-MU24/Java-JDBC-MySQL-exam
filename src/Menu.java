@@ -182,11 +182,6 @@ public class Menu {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
         System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
         System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
-//        for (Book b : listOfBooks){
-//            if (b.isAvailable()) {
-//                System.out.println(b.printAsTable());
-//                System.out.println("test");
-//        }}
         listOfBooks.forEach(b -> {
             if (b.isAvailable()) {
                 System.out.println(b.printAsTable());
