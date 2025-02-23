@@ -1,1 +1,93 @@
- // TODO Insert MySQL code
+CREATE DATABASE IF NOT EXISTS library;
+USE library;
+
+CREATE TABLE authors (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name TEXT NOT NULL
+	);
+
+CREATE TABLE books (
+	id  int PRIMARY KEY AUTO_INCREMENT,
+    title TEXT NOT NULL,
+    author_id INT NOT NULL,
+    available BOOLEAN DEFAULT 1,
+    FOREIGN KEY (author_id) REFERENCES authors(id)  ON DELETE CASCADE
+    );
+
+CREATE TABLE users (
+	id int PRIMARY KEY AUTO_INCREMENT,
+    name TEXT NOT NULL,
+    username VARCHAR(20) NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    loan_period INT,
+    admin_rights BOOLEAN NOT NULL
+    );
+
+CREATE TABLE loans (
+	id int PRIMARY KEY AUTO_INCREMENT,
+    user_id int,
+    book_id int,
+    loan_date DATE,
+    return_date DATE,
+    returned BOOLEAN DEFAULT 0,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    );
+
+INSERT INTO authors (name) VALUES
+  ("William Shakespeare"),
+  ("Stephen King"),
+  ("HC Andersen"),
+  ("J.K. Rowling"),
+  ("Jane Austen"),
+  ("Agatha Christie"),
+  ("Mark Twain"),
+  ("George Orwell"),
+  ("Charles Dickens"),
+  ("Leo Tolstoy");
+
+INSERT INTO books (title, author_id) VALUES
+  ("Hamlet", 1),
+  ("Macbeth", 1),
+  ("The Shining", 2),
+  ("It", 2),
+  ("The Dark Tower", 2),
+  ("Carrie", 2),
+  ("The Ugly Duckling", 3),
+  ("The Little Mermaid", 3),
+  ("Harry Potter and the Sorcerer's Stone", 4),
+  ("Harry Potter and the Chamber of Secrets", 4),
+  ("Pride and Prejudice", 5),
+  ("Sense and Sensibility", 5),
+  ("Murder on the Orient Express", 6),
+  ("The Murder of Roger Ackroyd", 6),
+  ("The Adventures of Tom Sawyer", 7),
+  ("The Adventures of Huckleberry Finn", 7),
+  ("1984", 8),
+  ("Animal Farm", 8),
+  ("A Tale of Two Cities", 9),
+  ("Great Expectations", 9),
+  ("War and Peace", 10),
+  ("Anna Karenina", 10);
+
+UPDATE books SET available = 0 WHERE id = 2 OR id = 3 OR  id = 5 OR  id = 7 OR  id = 8 OR  id = 9 OR  id = 10;
+
+INSERT INTO users (name, username, password, loan_period, admin_rights) VALUES
+  ("Alice Johnson", "alicej", "password1", NULL, true),
+  ("Bob Smith", "bobsmith", "password2", NULL, true),
+  ("Charlie Brown", "charlieb", "password3", 28, false),
+  ("Diana Prince", "dianap", "password4", 28, false),
+  ("Edward Elric", "ede", "password5", 28, false),
+  ("Fiona Shrek", "fiona", "password6", 28, false),
+  ("George Clooney", "georgec", "password7", 28, false);
+
+INSERT INTO loans (user_id, book_id, loan_date, return_date, returned) VALUES
+  (3, 1, '2025-01-01', '2025-01-29', true),
+  (3, 2, '2025-02-01', '2025-02-28', false),
+  (3, 3, '2025-03-01', '2025-03-30', false),
+  (4, 4, '2025-01-15', '2025-02-12', true),
+  (4, 5, '2025-02-15', '2025-03-14', false),
+  (5, 6, '2025-01-20', '2025-02-17', true),
+  (5, 7, '2025-03-01', '2025-03-29', false),
+  (5, 8, '2025-02-01', '2025-02-28', false),
+  (6, 9, '2025-03-01', '2025-03-30', false),
+  (6, 10, '2025-03-15', '2025-04-13', false);
