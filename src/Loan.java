@@ -40,25 +40,6 @@ public class Loan {
                 "\tReturned: " + (returned ? "Yes" : "No");
     }
 
-    public String toStringAsUser() {
-        return "Loan ID: " + id +
-                "\tBook ID:" + bookId +
-                "\tTitle: " + bookTitle +
-                "\tLoan date: " + loanDate +
-                "\tReturn date: " + returnDate +
-                "\tLate: " + (returnDate.isBefore(LocalDate.now()) ? "Yes" : "No");
-    }
-
-    public String toStringAsAdmin() {
-        return "Loan ID: " + id +
-                "\tUser Id: " + userId +
-                "\tBook ID:" + bookId +
-                "\tLoan date: " + loanDate +
-                "\tReturn date: " + returnDate +
-                "\tReturned: " + (returned ? "Yes" : "No") +
-                "\tLate: " + (returnDate.isBefore(LocalDate.now()) && !returned ? "Yes" : "No");
-    }
-
     public String printAsTableAsAdmin() {
         return String.format("| %-10s | %-10s | %-10s | %-15s | %-15s | %-10s | %-10s |", id, userId, bookId, loanDate, returnDate, returned ? "Yes" : "No", returnDate.isBefore(LocalDate.now()) && !returned ? "Yes" : "No");
     }
