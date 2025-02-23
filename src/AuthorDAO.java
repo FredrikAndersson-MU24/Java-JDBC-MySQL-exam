@@ -35,6 +35,23 @@ public class AuthorDAO {
         return listOfAuthors;
     }
 
+    public boolean authorExists() {
+        String query = "SELECT name FROM authors WHERE name = ?;";
+        List<Author> listOfAuthors = new ArrayList<>();
+        boolean result = false;
+        try {
+            Statement getAuthors = conn.createStatement();
+            ResultSet rs = getAuthors.executeQuery(query);
+            while (rs.next()) {
+                listOfAuthors.add(createAuthorFromResultSet(rs));
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get authors!");
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public List<Author> getAuthorsByFreeTextSearch(String searchString){
         String query = "SELECT * FROM authors WHERE name LIKE ?;";
         List<Author> listOfAuthors = new ArrayList<>();
