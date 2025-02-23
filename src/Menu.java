@@ -417,8 +417,8 @@ public class Menu {
     }
 
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    private static boolean usernameExists(String newUsername) {
-        return userDAO.getUsernames().contains(newUsername.toLowerCase());
+    private static boolean usernameExists(String username) {
+        return userDAO.usernameExists(username.toLowerCase());
     }
 
     private static void getAllUsers() {
@@ -430,7 +430,6 @@ public class Menu {
         }
     }
 
-
     private static void printUsersAsTable(List<User> listOfUsers) {
         System.out.println("-------------------------------------------------------------------------------------------------------");
         System.out.printf("| %-10s | %-50s | %-20s | %-10s |", "User ID", "Name", "Username", "Admin");
@@ -438,7 +437,6 @@ public class Menu {
         listOfUsers.forEach(u -> System.out.println(u.printAsTable()));
         System.out.println("-------------------------------------------------------------------------------------------------------");
     }
-
 
     /**
      * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
@@ -450,7 +448,7 @@ public class Menu {
      * 2 if AdminUser.
      */
     private static int authenticateLogin() {
-        int choice = 0; // Value to return if login is aborted at any point
+        int choice = 0; // Return value if login is aborted at any point
         String username = authenticateUsername();
         if (!username.equals("0")) {
             if (authenticatePassword(username)) {
@@ -464,10 +462,10 @@ public class Menu {
     private static String authenticateUsername() {
         String username;
         while (true) {
-            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ");
+            username = InputHandler.getString("Please enter your username (or 0(zero) to abort login attempt): ").toLowerCase();
             if (username.equals("0")) {
                 break;
-            } else if (userDAO.getUsernames().contains(username.toLowerCase())) {
+            } else if (usernameExists(username)) {
                 break;
             }
             System.out.println("User not found!");
@@ -476,7 +474,7 @@ public class Menu {
     }
 
     /**
-     * Use to validate users password at login. Queries the database with the username and checks if the password matches.
+     * Validate users password at login. Queries the database with the username and password and checks if they match.
      * @param username Provide username to check password for.
      * @return True if password is correct. Else false.
      */
@@ -487,7 +485,7 @@ public class Menu {
             if (password.equals("0")) {
                 result = false;
                 break;
-            } else if (userDAO.getPassword(username).equals(password)) {
+            } else if (userDAO.passwordCorrect(username, password)) {
                 result = true;
                 break;
             }
