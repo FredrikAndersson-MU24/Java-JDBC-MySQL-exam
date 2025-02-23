@@ -94,7 +94,7 @@ public class UserDAO {
      */
     public boolean passwordCorrect(String username, String password) {
         String query = "SELECT password FROM users WHERE username = ?;";
-        String password = "";
+        boolean result = false;
         try {
             PreparedStatement getPwd = conn.prepareStatement(query);
             getPwd.setString(1, username);
@@ -102,11 +102,11 @@ public class UserDAO {
             if(rs.next()){
                 password = rs.getString(1);
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Failed to get password!");
             e.printStackTrace();
         }
-        return password;
+        return result;
     }
 
     /**
