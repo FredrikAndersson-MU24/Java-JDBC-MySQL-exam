@@ -99,8 +99,10 @@ public class UserDAO {
             PreparedStatement getPwd = conn.prepareStatement(query);
             getPwd.setString(1, username);
             ResultSet rs = getPwd.executeQuery();
-            if(rs.next()){
-                password = rs.getString(1);
+            if (rs.next()) {
+                if (rs.getString(1).equals(password)) {
+                    result = true;
+                }
             }
         } catch (SQLException e) {
             System.out.println("Failed to get password!");
