@@ -6,7 +6,16 @@ public class UserDAO {
 
     private final Connection conn = Database.getConnection();
 
-    public void addUser(String name, String username, String password, int loanPeriod, boolean admin){
+    /**
+     * Add a new row to the user table in the database
+     *
+     * @param name
+     * @param username
+     * @param password
+     * @param loanPeriod
+     * @param admin
+     */
+    public void addUser(String name, String username, String password, int loanPeriod, boolean admin) {
         String query = "INSERT INTO users (name, username, password, loan_period, admin_rights) VALUES (?, ?, ?, ?, ?);";
         try {
             PreparedStatement addUser = conn.prepareStatement(query);
@@ -61,9 +70,6 @@ public class UserDAO {
         try {
             Statement getUsernames = conn.createStatement();
             ResultSet rs = getUsernames.executeQuery(query);
-            while(rs.next()){
-                if(rs.getBoolean(4)){
-                    listOfUsers.add(new AdminUser(rs.getInt(1), rs.getString(2),rs.getString(3)));
             while (rs.next()) {
                 if (rs.getBoolean(4)) {
                     listOfUsers.add(new AdminUser(rs.getInt(1), rs.getString(2), rs.getString(3)));
