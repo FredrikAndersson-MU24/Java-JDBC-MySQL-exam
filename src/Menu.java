@@ -168,16 +168,6 @@ public class Menu {
         }
     }
 
-
-//    private static void getAllBookIdsAndTitles() {
-//        List<Book> listOfBooks = bookDAO.getAllBooks();
-//        if (listOfBooks.isEmpty()) {
-//            System.out.println("There are no books.");
-//            return;
-//        }
-//        printBookIdAndTitleAsTable(listOfBooks);
-//    }
-
     private static void printAvailableBooksAsTable(List<Book> listOfBooks) {
         System.out.println("------------------------------------------------------------------------------------------------------------------------------");
         System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
