@@ -290,26 +290,50 @@ public class Menu {
     }
 
     private static void getAllLoans() {
-        loanDAO.getAllLoans().forEach(l -> System.out.println(l.toStringAsAdmin()));
+        List<Loan> listOfLoans = loanDAO.getAllLoans();
+        if (listOfLoans.isEmpty()) {
+            System.out.println("There are no recorded loans.");
+        } else {
+            printLoansAsTableAsAdmin(listOfLoans);
+        }
     }
 
     private static void getUsersActiveLoans() {
-        List<Loan> loans = loanDAO.getUsersActiveLoans(currentUser);
-        if (loans.isEmpty()) {
+        List<Loan> listOfLoans = loanDAO.getUsersActiveLoans(currentUser);
+        if (listOfLoans.isEmpty()) {
             System.out.println("You have no active loans.");
         } else {
-            loans.forEach(l -> System.out.println(l.toStringAsUser()));
+            printLoansAsTableAsUser(listOfLoans);
         }
     }
 
     private static void getActiveLoans() {
-        List<Loan> loans = loanDAO.getAllActiveLoans();
-        if (loans.isEmpty()) {
+        List<Loan> listOfLoans = loanDAO.getAllActiveLoans();
+        if (listOfLoans.isEmpty()) {
             System.out.println("There are no active loans.");
         } else {
-            loans.forEach(System.out::println);
+            printLoansAsTableAsAdmin(listOfLoans);
         }
     }
+
+
+    private static void printLoansAsTableAsUser(List<Loan> listOfLoans) {
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-10s |  %-50s | %-15s | %-15s | %-10s |", "Loan ID", "Book ID", "Title", "Loan date", "Return date", "Late");
+        System.out.println("\n-----------------------------------------------------------------------------------------------------------------------------------");
+        listOfLoans.forEach(l -> System.out.println(l.printAsTableAsUser()));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void printLoansAsTableAsAdmin(List<Loan> listOfLoans) {
+        System.out.println("------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-10s | %-10s | %-15s | %-15s | %-10s | %-10s |", "Loan ID", "User Id", "Book ID", "Loan date", "Return date", "Returned" , "Late");
+        System.out.println("\n------------------------------------------------------------------------------------------------------");
+        listOfLoans.forEach(l -> System.out.println(l.printAsTableAsAdmin()));
+        System.out.println("------------------------------------------------------------------------------------------------------");
+    }
+
+
 
     private static void addAuthor() {
         String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
