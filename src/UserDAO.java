@@ -23,21 +23,31 @@ public class UserDAO {
         }
     }
 
-    public List<String> getUsernames(){
-        String query = "SELECT username FROM users";
-        List<String> usernames = new ArrayList<>();
-        try{
-            Statement getUsernames = conn.createStatement();
-            ResultSet rs = getUsernames.executeQuery(query);
-            while(rs.next()){
-                usernames.add(rs.getString(1).toLowerCase());
+    /**
+     * Check if provided username already exists in the database
+     *
+     * @param username
+     * @return true - username exists in the db
+     * false - username does not exist in the db
+     */
+    public boolean usernameExists(String username) {
+        String query = "SELECT * FROM users WHERE username = ?;";
+        boolean result = false;
+        try {
+            PreparedStatement usernameExist = conn.prepareStatement(query);
+            usernameExist.setString(1, username);
+            ResultSet rs = usernameExist.executeQuery();
+            while (rs.next()) {
+                if (rs.getString(3).equals(username)) {
+                    result = true;
+                    break;
+                }
             }
-            System.out.println("Successfully retrieved usernames from DB");
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Failed to get usernames!");
             e.printStackTrace();
         }
-        return usernames;
+        return result;
     }
 
     /**
