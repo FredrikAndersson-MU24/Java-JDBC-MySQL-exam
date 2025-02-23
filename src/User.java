@@ -58,14 +58,7 @@ public abstract class User {
                 '}';
     }
 
-    /**
-     * Alternative toString
-     * @return ID, Name, Username, Admin Yes/No as String
-     */
-    public String toStringUsers() {
-        return "User ID: " + id +
-                "\tName: " + name +
-                "\tUsername: " + username +
-                "\tAdmin: " + ( isAdmin() ? "Yes" : "No" );
+    public String printAsTable() {
+        return String.format("| %-10s | %-50s | %-20s | %-10s |", id, name, username, admin ? "Yes" : "No");
     }
 }

@@ -63,7 +63,7 @@ public class Menu {
                     getUsersActiveLoans();
                     break;
                 case 4:
-                    getAllBooks();
+                    getBooks("available");
                     break;
                 case 5:
                     getBooksByFreeTextSearch();
@@ -105,7 +105,7 @@ public class Menu {
                     deleteBook();
                     break;
                 case 3:
-                    getAllBooks();
+                    getBooks("all");
                     break;
                 case 4:
                     addAuthor();
@@ -137,38 +137,76 @@ public class Menu {
 
     public static void addBook() {
         String title = InputHandler.getString("Please enter book title (or 0(zero) to abort):");
-        if (title.equals("0")){
+        if (title.equals("0")) {
             return;
         }
         getAuthors();
         int authorId = InputHandler.getPositiveInt("Please enter Author ID  (or 0(zero) to abort): ");
-        if (authorId == 0){
+        if (authorId == 0) {
             return;
         }
         bookDAO.addBook(title, authorId);
     }
 
-    private static void getAllBooks() {
+    /**
+     *  Gets all books from database. Argument states what to print. Prints as a table.
+     * @param type
+     * available - only books that are available
+     * all - all books regardless of status
+     * idAndTitle - print all books, but only ID and title.
+     */
+    private static void getBooks(String type) {
         List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(System.out::println);
+        if (listOfBooks.isEmpty()) {
+            System.out.println("There are no books.");
+            return;
+        }
+        switch (type) {
+            case "all" -> printAllBooksAsTable(listOfBooks);
+            case "available" -> printAvailableBooksAsTable(listOfBooks);
+            case "idAndTitle" -> printBookIdAndTitleAsTable(listOfBooks);
+        }
     }
 
-    private static void getAllBookIdsAndTitles() {
-        List<Book> listOfBooks = bookDAO.getAllBooks();
-        listOfBooks.forEach(b ->System.out.println("ID: " + b.id + "\tTitle: " + b.title));
+    private static void printAvailableBooksAsTable(List<Book> listOfBooks) {
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
+        System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
+        listOfBooks.forEach(b -> {
+            if (b.isAvailable()) {
+                System.out.println(b.printAsTable());
+            }});
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void printAllBooksAsTable(List<Book> listOfBooks) {
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-10s | %-30s | %-10s |", "Book ID", "Title", "Author ID", "Author", "Available");
+        System.out.println("\n------------------------------------------------------------------------------------------------------------------------------");
+        listOfBooks.forEach(b -> System.out.println(b.printAsTable()));
+        System.out.println("------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+
+    private static void printBookIdAndTitleAsTable(List<Book> listOfBooks) {
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s |", "Book ID", "Title");
+        System.out.println("\n-------------------------------------------------------------------");
+        listOfBooks.forEach(b -> System.out.println(b.printIdAndTitleAsTable()));
+        System.out.println("-------------------------------------------------------------------");
     }
 
     private static void getBooksByFreeTextSearch() {
         List<Book> listOfBooks = bookDAO.getBooksByFreeTextSearch(InputHandler.getString("Please enter search term: "));
-        if (listOfBooks.isEmpty()){
+        if (listOfBooks.isEmpty()) {
             System.out.println("No match for search term.");
         } else {
-            listOfBooks.forEach(System.out::println);
+            printAllBooksAsTable(listOfBooks);
         }
     }
 
     private static void deleteBook() {
-        getAllBookIdsAndTitles();
+        getBooks("idAndTitle");
         int id = InputHandler.getPositiveInt("Please enter ID of the book you want to delete (or 0(zero) to abort): ");
         if (id == 0) {
             return;
@@ -192,7 +230,7 @@ public class Menu {
     }
 
     private static void lendBook() {
-        getAllBooks();
+        getBooks("available");
         int id = InputHandler.getPositiveInt("Please enter book ID (or 0(zero) to abort): ");
         if (id == 0) {
             return;
@@ -237,58 +275,95 @@ public class Menu {
     }
 
     private static void getAllLoans() {
-        loanDAO.getAllLoans().forEach(l -> System.out.println(l.toStringAsAdmin()));
+        List<Loan> listOfLoans = loanDAO.getAllLoans();
+        if (listOfLoans.isEmpty()) {
+            System.out.println("There are no recorded loans.");
+        } else {
+            printLoansAsTableAsAdmin(listOfLoans);
+        }
     }
 
     private static void getUsersActiveLoans() {
-        List<Loan> loans = loanDAO.getUsersActiveLoans(currentUser);
-        if (loans.isEmpty()) {
+        List<Loan> listOfLoans = loanDAO.getUsersActiveLoans(currentUser);
+        if (listOfLoans.isEmpty()) {
             System.out.println("You have no active loans.");
         } else {
-            loans.forEach(l -> System.out.println(l.toStringAsUser()));
+            printLoansAsTableAsUser(listOfLoans);
         }
     }
 
     private static void getActiveLoans() {
-        List<Loan> loans = loanDAO.getAllActiveLoans();
-        if (loans.isEmpty()) {
+        List<Loan> listOfLoans = loanDAO.getAllActiveLoans();
+        if (listOfLoans.isEmpty()) {
             System.out.println("There are no active loans.");
         } else {
-            loans.forEach(System.out::println);
+            printLoansAsTableAsAdmin(listOfLoans);
         }
     }
 
+
+    private static void printLoansAsTableAsUser(List<Loan> listOfLoans) {
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-10s |  %-50s | %-15s | %-15s | %-10s |", "Loan ID", "Book ID", "Title", "Loan date", "Return date", "Late");
+        System.out.println("\n-----------------------------------------------------------------------------------------------------------------------------------");
+        listOfLoans.forEach(l -> System.out.println(l.printAsTableAsUser()));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");
+    }
+
+    private static void printLoansAsTableAsAdmin(List<Loan> listOfLoans) {
+        System.out.println("------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-10s | %-10s | %-15s | %-15s | %-10s | %-10s |", "Loan ID", "User Id", "Book ID", "Loan date", "Return date", "Returned" , "Late");
+        System.out.println("\n------------------------------------------------------------------------------------------------------");
+        listOfLoans.forEach(l -> System.out.println(l.printAsTableAsAdmin()));
+        System.out.println("------------------------------------------------------------------------------------------------------");
+    }
+
+
+
     private static void addAuthor() {
         String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
-        if (author.equals("0")){
+        if (author.equals("0")) {
             return;
         }
         authorDAO.addAuthor(author);
     }
 
     private static void getAuthors() {
-        authorDAO.getAuthors().forEach(System.out::println);
+        List<Author> listOfAuthors = authorDAO.getAuthors();
+        if (listOfAuthors.isEmpty()) {
+            System.out.println("There are no authors.");
+        } else {
+            printAuthorsAsTable(listOfAuthors);
+        }
     }
 
     private static void getAuthorsByFreeTextSearch() {
         List<Author> listOfAuthors = authorDAO.getAuthorsByFreeTextSearch(InputHandler.getString("Please enter search term: "));
-        if (listOfAuthors.isEmpty()){
+        if (listOfAuthors.isEmpty()) {
             System.out.println("No match.");
         } else {
-            listOfAuthors.forEach(System.out::println);
+            printAuthorsAsTable(listOfAuthors);
         }
+    }
+
+    private static void printAuthorsAsTable(List<Author> listOfAuthors) {
+        System.out.println("-------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s |", "Author ID", "Name");
+        System.out.println("\n-------------------------------------------------------------------");
+        listOfAuthors.forEach(l -> System.out.println(l.printAsTable()));
+        System.out.println("-------------------------------------------------------------------");
     }
 
     private static void addUser() {
         String name = InputHandler.getString("Please enter your name (or 0(zero) to abort): ");
-        if (name.equals("0")){
+        if (name.equals("0")) {
             return;
         }
         String username;
         String password;
         while (true) {
             username = InputHandler.getString("Please enter your username (or 0(zero) to abort): ");
-            if (username.equals("0")){
+            if (username.equals("0")) {
                 return;
             }
             if (!usernameExists(username)) {
@@ -298,10 +373,10 @@ public class Menu {
         }
         while (true) {
             password = InputHandler.getString("Please enter your password (or 0(zero) to abort): ");
-            if (password.equals("0")){
+            if (password.equals("0")) {
                 return;
             }
-            if (!password.equalsIgnoreCase(username)){
+            if (!password.equalsIgnoreCase(username)) {
                 break;
             }
             System.out.println("Password can not be the same as your username!");
@@ -311,14 +386,14 @@ public class Menu {
 
     private static void addUserAsAdmin() {
         String name = InputHandler.getString("Please enter name (or 0(zero) to abort): ");
-        if (name.equals("0")){
+        if (name.equals("0")) {
             return;
         }
         String username;
         String password;
         while (true) {
             username = InputHandler.getString("Please enter username (or 0(zero) to abort): ");
-            if (username.equals("0")){
+            if (username.equals("0")) {
                 return;
             }
             if (!usernameExists(username)) {
@@ -328,10 +403,10 @@ public class Menu {
         }
         while (true) {
             password = InputHandler.getString("Please enter password (or 0(zero) to abort): ");
-            if (password.equals("0")){
+            if (password.equals("0")) {
                 return;
             }
-            if (!password.equalsIgnoreCase(username)){
+            if (!password.equalsIgnoreCase(username)) {
                 break;
             }
             System.out.println("Password can not be the same as username!");
@@ -341,18 +416,29 @@ public class Menu {
         userDAO.addUser(name, username, password, loanPeriod, admin);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean usernameExists(String newUsername) {
         return userDAO.getUsernames().contains(newUsername.toLowerCase());
     }
 
-    private static void getAllUsers(){
+    private static void getAllUsers() {
         List<User> listOfUsers = userDAO.getAllUsers();
         if (listOfUsers.isEmpty()) {
             System.out.println("No registered users found!");
         } else {
-            listOfUsers.forEach(u -> System.out.println(u.toStringUsers()));
+            printUsersAsTable(listOfUsers);
         }
     }
+
+
+    private static void printUsersAsTable(List<User> listOfUsers) {
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-20s | %-10s |", "User ID", "Name", "Username", "Admin");
+        System.out.println("\n-------------------------------------------------------------------------------------------------------");
+        listOfUsers.forEach(u -> System.out.println(u.printAsTable()));
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+    }
+
 
     /**
      * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
