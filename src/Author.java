@@ -20,4 +20,8 @@ public class Author {
         return "ID: " + id +
                 "\tName: " + name;
     }
+
+    public String printAsTable() {
+        return String.format("| %-10s | %-50s |", id, name);
+    }
 }
