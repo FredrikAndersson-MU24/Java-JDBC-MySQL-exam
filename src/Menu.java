@@ -435,14 +435,24 @@ public class Menu {
         return userDAO.getUsernames().contains(newUsername.toLowerCase());
     }
 
-    private static void getAllUsers(){
+    private static void getAllUsers() {
         List<User> listOfUsers = userDAO.getAllUsers();
         if (listOfUsers.isEmpty()) {
             System.out.println("No registered users found!");
         } else {
-            listOfUsers.forEach(u -> System.out.println(u.toStringUsers()));
+            printUsersAsTable(listOfUsers);
         }
     }
+
+
+    private static void printUsersAsTable(List<User> listOfUsers) {
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+        System.out.printf("| %-10s | %-50s | %-20s | %-10s |", "User ID", "Name", "Username", "Admin");
+        System.out.println("\n-------------------------------------------------------------------------------------------------------");
+        listOfUsers.forEach(u -> System.out.println(u.printAsTable()));
+        System.out.println("-------------------------------------------------------------------------------------------------------");
+    }
+
 
     /**
      * Lets the user input username and password. Checks if the user exists in the database and if the password is correct.
