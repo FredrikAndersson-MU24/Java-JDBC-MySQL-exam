@@ -415,9 +415,16 @@ public class Menu {
 
 
     private static void addAuthor() {
-        String author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
-        if (author.equals("0")) {
-            return;
+        String author;
+        while (true) {
+            author = InputHandler.getString("Please enter the name of the author (or 0(zero) to abort):");
+            if (author.equals("0")) {
+                return;
+            }
+            if (!authorDAO.authorExists(author)) {
+                break;
+            }
+            System.out.println("There is already an author with that name in the database!");
         }
         authorDAO.addAuthor(author);
     }
