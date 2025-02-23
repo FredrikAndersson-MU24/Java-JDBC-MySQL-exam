@@ -59,14 +59,14 @@ public class AuthorDAO {
         return result;
     }
 
-    public List<Author> getAuthorsByFreeTextSearch(String searchString){
+    public List<Author> getAuthorsByFreeTextSearch(String searchString) {
         String query = "SELECT * FROM authors WHERE name LIKE ?;";
         List<Author> listOfAuthors = new ArrayList<>();
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1,"%" + searchString + "%");
+            stmt.setString(1, "%" + searchString + "%");
             ResultSet rs = stmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 listOfAuthors.add(createAuthorFromResultSet(rs));
             }
         } catch (SQLException e) {
@@ -75,6 +75,50 @@ public class AuthorDAO {
         }
         return listOfAuthors;
     }
+
+    public Author getAuthorById(int id) {
+        String query = "SELECT * FROM authors WHERE id = ?;";
+        Author author = null;
+        try {
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                author = createAuthorFromResultSet(rs);
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to get user by id!");
+            e.printStackTrace();
+        }
+        return author;
+    }
+
+
+    public boolean deleteAuthor(int id) {
+        boolean deleted = false;
+        String checkQuery = "SELECT authors.id " +
+                "FROM authors JOIN books ON books.author_id = authors.id " +
+                "JOIN loans ON loans.book_id = books.id " +
+                "WHERE authors.id = ? AND available = 0 " +
+                "HAVING count(available) > 0;";
+        String deleteQuery = "DELETE FROM authors WHERE id = ?;";
+        try {
+            PreparedStatement check = conn.prepareStatement(checkQuery);
+            check.setInt(1, id);
+            ResultSet rs = check.executeQuery();
+            if (!rs.next()) {
+                PreparedStatement delete = conn.prepareStatement(deleteQuery);
+                delete.setInt(1, id);
+                delete.executeUpdate();
+                deleted = true;
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to delete author");
+            e.printStackTrace();
+        }
+        return deleted;
+    }
+
 
     private Author createAuthorFromResultSet(ResultSet rs) throws SQLException {
         return new Author(

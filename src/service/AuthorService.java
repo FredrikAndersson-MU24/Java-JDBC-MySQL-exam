@@ -2,6 +2,7 @@ package service;
 
 import dao.AuthorDAO;
 import model.Author;
+import model.Book;
 import util.*;
 
 
@@ -41,6 +42,24 @@ public abstract class AuthorService {
             System.out.println("No match.");
         } else {
             printAuthorsAsTable(listOfAuthors);
+        }
+    }
+
+    public static void deleteAuthor() {
+        getAuthors();
+        int id = InputHandler.getPositiveInt("Please enter ID of the author you want to delete (or 0(zero) to abort): ");
+        if (id == 0) {
+            return;
+        }
+        Author author = authorDAO.getAuthorById(id);
+        if (author != null) {
+            if (authorDAO.deleteAuthor(id)){
+                System.out.println("Author deleted successfully!");
+            } else {
+                System.out.println("Author on active loan. Cannot be deleted att the moment.");
+            }
+        } else {
+                System.out.println("Unknown author ID!");
         }
     }
 

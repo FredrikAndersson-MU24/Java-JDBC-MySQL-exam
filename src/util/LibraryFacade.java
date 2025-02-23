@@ -20,6 +20,8 @@ public abstract class LibraryFacade {
         AuthorService.getAuthorsByFreeTextSearch();
     }
 
+    public static void deleteAuthor() { AuthorService.deleteAuthor();}
+
 
     // Users
     public static void getAllUsers() {
