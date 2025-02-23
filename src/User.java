@@ -68,4 +68,8 @@ public abstract class User {
                 "\tUsername: " + username +
                 "\tAdmin: " + ( isAdmin() ? "Yes" : "No" );
     }
+
+    public String printAsTable() {
+        return String.format("| %-10s | %-50s | %-20s | %-10s |", id, name, username, admin ? "Yes" : "No");
+    }
 }
