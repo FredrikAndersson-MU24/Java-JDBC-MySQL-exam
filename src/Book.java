@@ -30,6 +30,14 @@ public class Book {
                 "\nAuthor ID: " + authorId;
     }
 
+    public String printAsTable() {
+        return String.format("| %-10s | %-50s | %-10s | %-30s | %-10s |", id, title, authorId, author, available ? "Yes" : "No");
+    }
+
+    public String printIdAndTitleAsTable() {
+        return String.format("| %-10s | %-50s |", id, title);
+    }
+
     public int getId() {
         return id;
     }
